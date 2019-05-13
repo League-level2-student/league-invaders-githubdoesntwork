@@ -1,85 +1,123 @@
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
-import javax.swing.*;
+import javax.swing.JPanel;
+import javax.swing.Timer;
 
-public class GamePanel extends JPanel implements ActionListener, KeyListener {
+public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	Timer timer;
+	final int menu = 0, game = 1, end = 2;
+	int current = menu;
 	Font titleFont;
-	Rocketship rocket;
-	GameObject object;
-	final int menu=0, game=1, end=2;
-	int current=menu;
+	Font otherFont;
+	Rocketship rocket = new Rocketship(225,500,50,50);
 
 	public GamePanel() {
-		rocket=new Rocketship(225,500,50,50);
-		titleFont=new Font("Arial", Font.PLAIN, 48);
-		object = new GameObject(0,0,0,0);
-		timer = new Timer(1000 / 60, this);
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		object.update();
-		repaint();
-	}
-
-	public void startGame() {
+		titleFont = new Font("Arial", Font.PLAIN, 48);
+		otherFont = new Font("Arial", Font.PLAIN, 28);
+		timer = new Timer(1000/60, this);
 		timer.start();
 	}
 
 	@Override
 	public void paintComponent(Graphics g) {
-		object.draw(g);
-		if(current==menu) {
+		if (current == menu) {
 			drawMenu(g);
-		}else if(current==game) {
-			updateGame(g);
-		}else {
+		} else if (current == game) {
+			drawGame(g);
+		} else if (current == end) {
 			drawEnd(g);
 		}
 	}
+
+	public void updateGame() {
+
+	}
+
+	public void updateMenu() {
+
+	}
+
+	public void updateEnd() {
+
+	}
+
 	public void drawMenu(Graphics g) {
+		g.setColor(Color.blue);
+		g.fillRect(0, 0, 500, 600);
 		g.setFont(titleFont);
-		g.setColor(Color.BLUE);
-		g.fillRect(0, 0, 500, 600); 
-		g.setColor(Color.yellow);
-		g.drawString("LEEG INVADRZ©", 65, 200);
+		g.setColor(Color.YELLOW);
+		g.drawString("LEAGUE INVADERS", 30, 150);
+		g.setFont(otherFont);
+		g.drawString("Press ENTER to start", 110, 300);
+		g.drawString("Press SPACE for instructions", 75, 430);
 	}
-	public void updateGame(Graphics g) {
+
+	public void drawGame(Graphics g) {
 		g.setColor(Color.black);
 		g.fillRect(0, 0, 500, 600);
-		rocket.draw(g);
+rocket.draw(g);
 	}
+
 	public void drawEnd(Graphics g) {
-		g.setFont(titleFont);
-		g.setColor(Color.red);
-		g.fillRect(0, 0, 500, 600);
-		g.setColor(Color.black);
-		g.drawString("Game Over", 130, 200);
+g.setColor(Color.RED);
+g.fillRect(0, 0, 500, 600);
+g.setFont(titleFont);
+g.setColor(Color.yellow);
+g.drawString("GAME OVER", 100, 150);
+g.setFont(otherFont);
+g.drawString("You killed enemies", 150, 300);
+g.drawString("Press ENTER to try again", 100, 430);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (current == menu) {
+			updateMenu();
+		} else if (current == game) {
+			updateGame();
+		} else if (current == end) {
+			updateEnd();
+		}
+		repaint();
 	}
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-		System.out.println("Key Typed");
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		int key=e.getKeyCode();
-		if(key==KeyEvent.VK_ENTER) {
-			if(current==menu) {
-				current=game;
-			}else if(current==game){
-				current=end;
-			}else {
-				current=menu;
+		if (e.getKeyCode()==KeyEvent.VK_ENTER) {
+		    if (current == end) {
+		        current = menu;
+		    } else {
+		        current++;
+		    }
+		}   
+		if(current==game) {
+			if (e.getKeyCode()==KeyEvent.VK_UP) {
+			    rocket.up();
+			}else if(e.getKeyCode()==KeyEvent.VK_RIGHT) {
+				rocket.right();
+			}else if(e.getKeyCode()==KeyEvent.VK_LEFT) {
+				rocket.left();
+			}else if(e.getKeyCode()==KeyEvent.VK_DOWN){
+				rocket.down();
 			}
 		}
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		System.out.println("Key Released");
+		// TODO Auto-generated method stub
+		
 	}
 }
