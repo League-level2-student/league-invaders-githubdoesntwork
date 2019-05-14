@@ -22,6 +22,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	Timer timer;
 	GameObject object;
 	Player player;
+	Lights lights;
 	public GamePanel() {
 		title = new Font("Monospace", Font.BOLD, 48);
 		normal = new Font("Somehting", Font.PLAIN, 20);
@@ -94,9 +95,14 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.setColor(Color.black);
 		Rectangle exit = new Rectangle(350, 230, 30, 30);
 		g.fillRect(350, 230, 30, 30);
+		lights = new Lights(150,350, 400,350,"horizBeam");
+		lights.draw(g);
 		if(exit.intersects(player.playerRect)) {
 			level++;
 			JOptionPane.showMessageDialog(null, "Completed Level 1!");
+		}else if(player.playerRect.intersects(lights.lightRect)) {
+			level=1;
+			current=gameOver;
 		}
 		}
 	}
