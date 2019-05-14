@@ -14,7 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 public class GamePanel extends JPanel implements ActionListener, KeyListener {
-	final int menu=0, game=1, gameOver=2, end=3;
+	final int menu=0, game=1, gameOver=2, end=3, instructions=4;
 	int level=1;
 	int current=menu;
 	Font title;
@@ -23,9 +23,11 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	GameObject object;
 	Player player;
 	Lights lights;
+	PowerUp shield;
+	boolean isShielded = false;
 	public GamePanel() {
-		title = new Font("Monospace", Font.BOLD, 48);
-		normal = new Font("Somehting", Font.PLAIN, 20);
+		title = new Font("", Font.BOLD, 48);
+		normal = new Font("", Font.PLAIN, 20);
 		timer = new Timer(1000/1000, this);
 		timer.start();
 	}
@@ -39,6 +41,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			drawGameOver(g);
 		}else if(current == end) {
 			drawEnd(g);
+		}else if(current == instructions) {
+			drawInstructions(g);
 		}
 	}
 	
@@ -52,6 +56,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			updateGameOver();
 		}else if(current == end){
 			updateEnd();
+		}else if(current == instructions) {
+			updateInstructions();
 		}
 		repaint();
 	}
@@ -67,6 +73,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	public void updateEnd() {
 		
 	}
+	public void updateInstructions() {
+		
+	}
 	public void drawMenu(Graphics g) {
 		g.setColor(Color.black);
 		g.fillRect(0, 0, 600, 500);
@@ -75,7 +84,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.drawString("Photophobia", 150, 150);
 		g.setFont(normal);
 		g.drawRect(185, 375, 235, 40);
-		g.drawString("Press any key to start", 200, 400);
+		g.drawRect(155, 200, 295, 40);
+		g.drawString("Press Enter for instructions", 175, 225);
+		g.drawString("Press space to start", 210, 400);
 	}
 	public void drawGame(Graphics g) {
 		if(level==1) {
@@ -89,22 +100,26 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.fillRect(0,0,80,600);
 		g.fillRect(520, 0, 80, 600);
 		player.draw(g);
-		g.setFont(normal);
-		g.setColor(groundColor);
-		g.drawString("This is the exit", 300, 200);
 		g.setColor(Color.black);
 		Rectangle exit = new Rectangle(350, 230, 30, 30);
 		g.fillRect(350, 230, 30, 30);
 		lights = new Lights(150,350, 400,350,"horizBeam");
 		lights.draw(g);
+		shield = new PowerUp(150,150,0,0);
+		shield.draw(g);
 		if(exit.intersects(player.playerRect)) {
 			level++;
 			JOptionPane.showMessageDialog(null, "Completed Level 1!");
 		}else if(player.playerRect.intersects(lights.lightRect)) {
 			level=1;
 			current=gameOver;
+		}else if(player.playerRect.intersects(shield.rect)) {
+			isShielded=true;
 		}
 		}
+	}
+	public boolean isShielded() {
+		return isShielded;
 	}
 	public void drawGameOver(Graphics g) {
 		g.setColor(Color.black);
@@ -113,10 +128,25 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.setFont(title);
 		g.drawString("Game Over", 150, 150);
 		g.setFont(normal);
-		g.drawString("Press any key to restart", 170, 350);
+		g.drawString("Press space to restart", 180, 350);
+		g.drawString("What a tragedy", 215, 250);
 	}
 	public void drawEnd(Graphics g) {
-		
+	//placeholder for end
+	}
+	public void drawInstructions(Graphics g) {
+		g.setColor(Color.black);
+		g.fillRect(0, 0, 600, 500);
+		g.setColor(Color.yellow);
+		g.setFont(title);
+		g.drawString("Instructions", 140, 150);
+		g.setFont(normal);
+		g.drawString("The red rectangle acts as a shield, which protects the player", 5,250);
+		g.drawString("from one collision with a light. The black square is the exit,", 5, 280);
+		g.drawString("which is triggered upon contact. Finally, the yellow represents", 5, 310);
+		g.drawString("a laser, which kills the player unless he/she has a shield.", 5, 340);
+		g.drawString("Press space to return to menu", 150, 400);
+	
 	}
 	@Override
 	public void keyTyped(KeyEvent e) {
@@ -126,12 +156,16 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		int key = e.getKeyCode();
-		if(current==menu) {
+		if(current==menu&&key==KeyEvent.VK_SPACE) {
 			level=1;
 			player = new Player(288, 238, 25, 25);
 			current=game;
 			System.out.println(current);
-		}else if(current==gameOver) {
+		}else if(current==instructions&&key==KeyEvent.VK_SPACE) {
+			current=menu;
+		}else if(current==menu&&key==KeyEvent.VK_ENTER) {
+			current=instructions;
+		}else if(current==gameOver&&key==KeyEvent.VK_SPACE) {
 			current=menu;
 			System.out.println(current);
 		}else if(current==end) {
@@ -156,5 +190,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
 		
+	}
+	public boolean getShielded() {
+		return isShielded;
 	}
 }

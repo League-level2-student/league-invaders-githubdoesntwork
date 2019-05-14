@@ -6,14 +6,19 @@ import java.awt.Rectangle;
 
 public class Player extends GameObject{
 	int gravity=10;
+	GamePanel panel;
 	Rectangle playerRect;
 	public Player(int a, int b, int c, int d) {
 		super(a, b, c, d);
 		speed=10;
 	}
 	public void draw(Graphics g) {
-		Color playerColor = new Color(153,153,153);
-		g.setColor(playerColor);
+		if(panel.getShielded()) {
+			g.setColor(Color.red);
+		}else {
+			Color playerColor = new Color(153,153,153);
+			g.setColor(playerColor);
+		}
 		playerRect = new Rectangle(x,y,width,height);
 		g.fillRect(x, y, width, height);
 		
