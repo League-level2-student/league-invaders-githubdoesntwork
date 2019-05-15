@@ -24,7 +24,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	Player player;
 	Lights lights;
 	PowerUp shield;
-	boolean isShielded = false;
+	boolean isShielded = false;					//CREATED isSHIELD GETTER AND MADE AN INTERSECTION DETECTOR
 	public GamePanel() {
 		title = new Font("", Font.BOLD, 48);
 		normal = new Font("", Font.PLAIN, 20);
@@ -99,6 +99,12 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.fillRect(0, 0, 600, 80);
 		g.fillRect(0,0,80,600);
 		g.fillRect(520, 0, 80, 600);
+		if(isShielded) {
+			g.setColor(Color.red);
+		}else {
+			Color playerColor = new Color(153,153,153);
+			g.setColor(playerColor);
+		}
 		player.draw(g);
 		g.setColor(Color.black);
 		Rectangle exit = new Rectangle(350, 230, 30, 30);
@@ -191,7 +197,5 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		// TODO Auto-generated method stub
 		
 	}
-	public boolean getShielded() {
-		return isShielded;
-	}
+
 }
