@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.Random;
 
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -24,11 +25,14 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	Player player;
 	Lights lights;
 	PowerUp shield;
-	boolean isShielded = false;					//CREATED isSHIELD GETTER AND MADE AN INTERSECTION DETECTOR
+	boolean isPowerUp;
+	int rand;
+	boolean intersectsLight=false;
+	int speed;
 	public GamePanel() {
 		title = new Font("", Font.BOLD, 48);
 		normal = new Font("", Font.PLAIN, 20);
-		timer = new Timer(1000/1000, this);
+		timer = new Timer(1000/60, this);
 		timer.start();
 	}
 	@Override
@@ -99,7 +103,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.fillRect(0, 0, 600, 80);
 		g.fillRect(0,0,80,600);
 		g.fillRect(520, 0, 80, 600);
-		if(isShielded) {
+		if(isPowerUp) {
 			g.setColor(Color.red);
 		}else {
 			Color playerColor = new Color(153,153,153);
@@ -113,20 +117,31 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		lights.draw(g);
 		shield = new PowerUp(150,150,0,0);
 		shield.draw(g);
+		if(player.playerRect.intersects(lights.lightRect)) {
+			intersectsLight=true;
+		}else {
+			intersectsLight=false;
+		}
 		if(exit.intersects(player.playerRect)) {
 			level++;
 			JOptionPane.showMessageDialog(null, "Completed Level 1!");
+			isPowerUp=false;
 		}else if(player.playerRect.intersects(lights.lightRect)) {
 			level=1;
+			rand++;
+			if(rand>2) {
+				rand=0;
+			}
 			current=gameOver;
-		}else if(player.playerRect.intersects(shield.rect)) {
-			isShielded=true;
+			}else if(player.playerRect.intersects(shield.rect)) {
+				isPowerUp=true;
+			}
+		if(isPowerUp) {
+			
 		}
 		}
-	}
-	public boolean isShielded() {
-		return isShielded;
-	}
+		}
+	
 	public void drawGameOver(Graphics g) {
 		g.setColor(Color.black);
 		g.fillRect(0, 0, 600, 500);
@@ -135,7 +150,13 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.drawString("Game Over", 150, 150);
 		g.setFont(normal);
 		g.drawString("Press space to restart", 180, 350);
-		g.drawString("What a tragedy", 215, 250);
+		if(rand==1) {
+		g.drawString("What a tragedy", 215, 250);	
+		}else if(rand==0) {
+	 g.drawString("Try harder than that", 190, 250);
+		}else if(rand==2) {
+		g.drawString("Life is hard", 230, 250);
+		}
 	}
 	public void drawEnd(Graphics g) {
 	//placeholder for end
@@ -145,12 +166,14 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.fillRect(0, 0, 600, 500);
 		g.setColor(Color.yellow);
 		g.setFont(title);
-		g.drawString("Instructions", 140, 150);
+		g.drawString("Instructions", 140, 100);
 		g.setFont(normal);
-		g.drawString("The red rectangle acts as a shield, which protects the player", 5,250);
-		g.drawString("from one collision with a light. The black square is the exit,", 5, 280);
+		g.drawString("'Photophobia' is the fear of light. Avoid the light to survive.", 5, 220);
+		g.drawString("The red rectangle gives the player a sizable speed boost.", 10,250);
+		g.drawString("Near the end of the level, the black square is the exit,", 5, 280);
 		g.drawString("which is triggered upon contact. Finally, the yellow represents", 5, 310);
 		g.drawString("a laser, which kills the player unless he/she has a shield.", 5, 340);
+		g.drawString("The player can navigate with 'WASD' keys.", 5, 370);
 		g.drawString("Press space to return to menu", 150, 400);
 	
 	}
@@ -164,6 +187,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		int key = e.getKeyCode();
 		if(current==menu&&key==KeyEvent.VK_SPACE) {
 			level=1;
+			isPowerUp=false;
 			player = new Player(288, 238, 25, 25);
 			current=game;
 			System.out.println(current);
@@ -179,13 +203,29 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			System.out.println(current);
 		}else if(current==game) {
 			if(key==KeyEvent.VK_W) {
-				player.up();
+				if(isPowerUp) {
+					player.up(15);
+				}else {
+					player.up(10);
+				}
 			}else if(key==KeyEvent.VK_D) {
-				player.right();
+				if(isPowerUp) {
+					player.right(15);
+				}else {
+					player.right(10);
+				}
 			}else if(key==KeyEvent.VK_A) {
-				player.left();
+				if(isPowerUp) {
+					player.left(15);
+				}else {
+					player.left(10);
+				}
 			}else if(key==KeyEvent.VK_S) {
-				player.down();
+				if(isPowerUp) {
+					player.down(15);
+				}else {
+					player.down(10);
+				}
 			}else if(key==KeyEvent.VK_ENTER) {
 				current++;
 			}
