@@ -8,9 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.Random;
 
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -112,7 +110,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.setColor(Color.black);
 		Rectangle exit = new Rectangle(350, 230, 30, 30);
 		g.fillRect(350, 230, 30, 30);
-		lights = new Lights(150,350, 400,350,"horizBeam");
+		lights = new Lights(150,350, 400,350,0,"horizBeam");
 		lights.draw(g);
 		shield = new PowerUp(150,150,0,0);
 		shield.draw(g);
@@ -153,9 +151,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			}
 			player.draw(g);
 			g.setColor(Color.black);
-			Rectangle exit = new Rectangle(400, 230, 30, 30);
-			g.fillRect(400, 230, 30, 30);
-			lights = new Lights(150,200, 150,300,"vertBeam");
+			Rectangle exit = new Rectangle(420, 120, 30, 30);
+			g.fillRect(420, 120, 30, 30);
+			lights = new Lights(150,200, 150,300,0,"vertBeam");
 			lights.draw(g);
 			shield = new PowerUp(150,150,0,0);
 			shield.draw(g);
@@ -165,7 +163,50 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 				intersectsLight=false;
 			}
 			if(exit.intersects(player.playerRect)) {
-				level=2;
+				level=3;
+				isPowerUp=false;
+				current=game;
+			}else if(intersectsLight) {
+				level=1;
+				rand++;
+				if(rand>2) {
+					rand=0;
+				}
+				current=gameOver;
+				}else if(player.playerRect.intersects(shield.rect)) {
+					isPowerUp=true;
+				}
+		}else if(level==3) {
+			Color gameColor = new Color(35,35,35);
+			g.setColor(gameColor);
+			g.fillRect(0, 0, 600, 500);
+			Color groundColor = new Color(99, 72, 72);
+			g.setColor(groundColor);
+			g.fillRect(0, 420, 600, 80);
+			g.fillRect(0, 0, 600, 80);
+			g.fillRect(0,0,80,600);
+			g.fillRect(520, 0, 80, 600);
+			if(isPowerUp) {
+				g.setColor(Color.red);
+			}else {
+				Color playerColor = new Color(153,153,153);
+				g.setColor(playerColor);
+			}
+			player.draw(g);
+			g.setColor(Color.black);
+			Rectangle exit = new Rectangle(420, 380, 30, 30);
+			g.fillRect(420, 380, 30, 30);
+			lights = new Lights(150,200, 150,300,200,"movingHoriz");
+			lights.draw(g);
+			shield = new PowerUp(150,150,0,0);
+			shield.draw(g);
+			if(player.playerRect.intersects(lights.lightRect)) {
+				intersectsLight=true;
+			}else {
+				intersectsLight=false;
+			}
+			if(exit.intersects(player.playerRect)) {
+				level=1;
 				isPowerUp=false;
 				current=game;
 			}else if(intersectsLight) {
@@ -211,9 +252,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.drawString("The red rectangle gives the player a sizable speed boost.", 10,250);
 		g.drawString("Near the end of the level, the black square is the exit,", 5, 280);
 		g.drawString("which is triggered upon contact. Finally, the yellow represents", 5, 310);
-		g.drawString("a laser, which kills the player unless he/she has a shield.", 5, 340);
-		g.drawString("The player can navigate with 'WASD' keys.", 5, 370);
-		g.drawString("Press space to return to menu", 150, 400);
+		g.drawString("a light, which kills the player. The player can navigate ", 5, 340);
+		g.drawString("with 'WASD' keys.", 5, 370);
+		g.drawString("Press space to return to menu", 150, 450);
 	
 	}
 	@Override
