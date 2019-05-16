@@ -22,11 +22,18 @@ public void update() {
 public void draw(Graphics g) {
 	if(type=="horizBeam") {
 	g.setColor(Color.yellow);
-	lightRect = new Rectangle(firstX+10, firstY+10, secondX, 10);
+	lightRect = new Rectangle(firstX+10, firstY+10, secondX-firstX+30, 10);
 	g.fillRect(firstX+10, firstY+10, secondX-firstX+30, 10);
 	g.setColor(Color.DARK_GRAY);
 	g.fillOval(firstX, firstY, 30, 30);
 	g.fillOval(secondX+30, secondY, 30, 30);
+	}else if(type=="vertBeam") {
+		g.setColor(Color.yellow);
+		lightRect = new Rectangle(firstX+10, firstY+10,10,secondY-firstY+30);
+		g.fillRect(firstX+10, firstY+10, 10, secondY-firstY+30);
+		g.setColor(Color.DARK_GRAY);
+		g.fillOval(firstX, firstY, 30, 30);
+		g.fillOval(secondX, secondY+30, 30, 30);
 	}
 }
 }

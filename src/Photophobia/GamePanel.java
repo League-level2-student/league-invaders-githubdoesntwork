@@ -28,7 +28,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	boolean isPowerUp;
 	int rand;
 	boolean intersectsLight=false;
-	int speed;
 	public GamePanel() {
 		title = new Font("", Font.BOLD, 48);
 		normal = new Font("", Font.PLAIN, 20);
@@ -123,10 +122,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			intersectsLight=false;
 		}
 		if(exit.intersects(player.playerRect)) {
-			level++;
-			JOptionPane.showMessageDialog(null, "Completed Level 1!");
+			level=2;
 			isPowerUp=false;
-		}else if(player.playerRect.intersects(lights.lightRect)) {
+			current=game;
+		}else if(intersectsLight) {
 			level=1;
 			rand++;
 			if(rand>2) {
@@ -136,9 +135,49 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			}else if(player.playerRect.intersects(shield.rect)) {
 				isPowerUp=true;
 			}
-		if(isPowerUp) {
-			
-		}
+		}else if(level==2) {
+			Color gameColor = new Color(35,35,35);
+			g.setColor(gameColor);
+			g.fillRect(0, 0, 600, 500);
+			Color groundColor = new Color(99, 72, 72);
+			g.setColor(groundColor);
+			g.fillRect(0, 420, 600, 80);
+			g.fillRect(0, 0, 600, 80);
+			g.fillRect(0,0,80,600);
+			g.fillRect(520, 0, 80, 600);
+			if(isPowerUp) {
+				g.setColor(Color.red);
+			}else {
+				Color playerColor = new Color(153,153,153);
+				g.setColor(playerColor);
+			}
+			player.draw(g);
+			g.setColor(Color.black);
+			Rectangle exit = new Rectangle(400, 230, 30, 30);
+			g.fillRect(400, 230, 30, 30);
+			lights = new Lights(150,200, 150,300,"vertBeam");
+			lights.draw(g);
+			shield = new PowerUp(150,150,0,0);
+			shield.draw(g);
+			if(player.playerRect.intersects(lights.lightRect)) {
+				intersectsLight=true;
+			}else {
+				intersectsLight=false;
+			}
+			if(exit.intersects(player.playerRect)) {
+				level=2;
+				isPowerUp=false;
+				current=game;
+			}else if(intersectsLight) {
+				level=1;
+				rand++;
+				if(rand>2) {
+					rand=0;
+				}
+				current=gameOver;
+				}else if(player.playerRect.intersects(shield.rect)) {
+					isPowerUp=true;
+				}
 		}
 		}
 	
@@ -159,7 +198,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		}
 	}
 	public void drawEnd(Graphics g) {
-	//placeholder for end
+		//placeholder for the end
 	}
 	public void drawInstructions(Graphics g) {
 		g.setColor(Color.black);
