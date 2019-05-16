@@ -25,11 +25,13 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	PowerUp shield;
 	boolean isPowerUp;
 	int rand;
+	int x,y;
+	boolean right=true;
 	boolean intersectsLight=false;
 	public GamePanel() {
 		title = new Font("", Font.BOLD, 48);
 		normal = new Font("", Font.PLAIN, 20);
-		timer = new Timer(1000/60, this);
+		timer = new Timer(0, this);
 		timer.start();
 	}
 	@Override
@@ -110,7 +112,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.setColor(Color.black);
 		Rectangle exit = new Rectangle(350, 230, 30, 30);
 		g.fillRect(350, 230, 30, 30);
-		lights = new Lights(150,350, 400,350,0,"horizBeam");
+		lights = new Lights(150,350, 400,350,"horizBeam");
 		lights.draw(g);
 		shield = new PowerUp(150,150,0,0);
 		shield.draw(g);
@@ -153,7 +155,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			g.setColor(Color.black);
 			Rectangle exit = new Rectangle(420, 120, 30, 30);
 			g.fillRect(420, 120, 30, 30);
-			lights = new Lights(150,200, 150,300,0,"vertBeam");
+			lights = new Lights(150,200, 150,300,"vertBeam");
 			lights.draw(g);
 			shield = new PowerUp(150,150,0,0);
 			shield.draw(g);
@@ -164,6 +166,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			}
 			if(exit.intersects(player.playerRect)) {
 				level=3;
+				x=150;
 				isPowerUp=false;
 				current=game;
 			}else if(intersectsLight) {
@@ -196,7 +199,17 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			g.setColor(Color.black);
 			Rectangle exit = new Rectangle(420, 380, 30, 30);
 			g.fillRect(420, 380, 30, 30);
-			lights = new Lights(150,200, 150,300,200,"movingHoriz");
+			if(right) {
+				x+=2;
+			}else {
+				x-=2;
+			}
+			if(x>200) {
+				right=false;
+			}else if(x<150) {
+				right=true;
+			}
+			lights = new Lights(x,200, x,300,"movingHoriz");
 			lights.draw(g);
 			shield = new PowerUp(150,150,0,0);
 			shield.draw(g);
