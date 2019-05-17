@@ -31,7 +31,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	public GamePanel() {
 		title = new Font("", Font.BOLD, 48);
 		normal = new Font("", Font.PLAIN, 20);
-		timer = new Timer(0, this);
+		timer = new Timer(1000/60, this);
 		timer.start();
 	}
 	@Override
