@@ -8,17 +8,15 @@ public class Lights extends GameObject{
 	int firstX, firstY, secondX, secondY;
 	String type;
 	Rectangle lightRect;
+	boolean right=true;
 	public Lights(int a, int b, int c, int d, String t) {
 		super(a, b, c, d);
 		firstX = a;
 		firstY=b;
 		secondX=c;
 		secondY=d;
-		type = t;
+		type = t; 
 	}
-public void update() {
-	
-}
 public void draw(Graphics g) {
 	if(type=="horizBeam") {
 	g.setColor(Color.yellow);
@@ -34,6 +32,14 @@ public void draw(Graphics g) {
 		g.setColor(Color.DARK_GRAY);
 		g.fillOval(firstX, firstY, 30, 30);
 		g.fillOval(secondX, secondY+30, 30, 30);
+	}else if(type=="movingHoriz") {
+		g.setColor(Color.yellow);
+		lightRect = new Rectangle(firstX+7, firstY+10, 15, secondY-firstY+30);
+		g.fillRect(firstX+7, firstY+10, 15, secondY-firstY+30);
+		g.setColor(Color.DARK_GRAY);
+		g.fillOval(firstX, firstY, 30, 30);
 	}
+}
+public void update() {
 }
 }

@@ -8,9 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.Random;
 
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -27,11 +25,13 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	PowerUp shield;
 	boolean isPowerUp;
 	int rand;
+	int x,y;
+	boolean right=true;
 	boolean intersectsLight=false;
 	public GamePanel() {
 		title = new Font("", Font.BOLD, 48);
 		normal = new Font("", Font.PLAIN, 20);
-		timer = new Timer(1000/60, this);
+		timer = new Timer(0, this);
 		timer.start();
 	}
 	@Override
@@ -153,8 +153,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			}
 			player.draw(g);
 			g.setColor(Color.black);
-			Rectangle exit = new Rectangle(400, 120, 30, 30);
-			g.fillRect(400, 120, 30, 30);
+			Rectangle exit = new Rectangle(420, 120, 30, 30);
+			g.fillRect(420, 120, 30, 30);
 			lights = new Lights(150,200, 150,300,"vertBeam");
 			lights.draw(g);
 			shield = new PowerUp(150,150,0,0);
@@ -165,7 +165,61 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 				intersectsLight=false;
 			}
 			if(exit.intersects(player.playerRect)) {
-				level=2;
+				level=3;
+				x=150;
+				isPowerUp=false;
+				current=game;
+			}else if(intersectsLight) {
+				level=1;
+				rand++;
+				if(rand>2) {
+					rand=0;
+				}
+				current=gameOver;
+				}else if(player.playerRect.intersects(shield.rect)) {
+					isPowerUp=true;
+				}
+		}else if(level==3) {
+			Color gameColor = new Color(35,35,35);
+			g.setColor(gameColor);
+			g.fillRect(0, 0, 600, 500);
+			Color groundColor = new Color(99, 72, 72);
+			g.setColor(groundColor);
+			g.fillRect(0, 420, 600, 80);
+			g.fillRect(0, 0, 600, 80);
+			g.fillRect(0,0,80,600);
+			g.fillRect(520, 0, 80, 600);
+			if(isPowerUp) {
+				g.setColor(Color.red);
+			}else {
+				Color playerColor = new Color(153,153,153);
+				g.setColor(playerColor);
+			}
+			player.draw(g);
+			g.setColor(Color.black);
+			Rectangle exit = new Rectangle(420, 380, 30, 30);
+			g.fillRect(420, 380, 30, 30);
+			if(right) {
+				x+=2;
+			}else {
+				x-=2;
+			}
+			if(x>200) {
+				right=false;
+			}else if(x<150) {
+				right=true;
+			}
+			lights = new Lights(x,200, x,300,"movingHoriz");
+			lights.draw(g);
+			shield = new PowerUp(150,150,0,0);
+			shield.draw(g);
+			if(player.playerRect.intersects(lights.lightRect)) {
+				intersectsLight=true;
+			}else {
+				intersectsLight=false;
+			}
+			if(exit.intersects(player.playerRect)) {
+				level=1;
 				isPowerUp=false;
 				current=game;
 			}else if(intersectsLight) {
