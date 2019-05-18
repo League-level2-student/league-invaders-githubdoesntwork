@@ -9,6 +9,7 @@ Rocketship rocket;
 ArrayList<Projectile> projectiles=new ArrayList<Projectile>();
 ArrayList<Alien> aliens=new ArrayList<Alien>();
 Random r = new Random();
+int score=0;
 public ObjectManager(Rocketship r) {
 	rocket = r;
 }
@@ -36,6 +37,9 @@ public void update() {
 	checkCollision();
 	purgeObjects();
 	}
+}
+public int getScore() {
+	return score;
 }
 public void draw(Graphics g) {
 	rocket.draw(g);
@@ -66,7 +70,6 @@ public void actionPerformed(ActionEvent e) {
 public void checkCollision() {
 	for (int i = 0; i < aliens.size(); i++) {
 		if(aliens.get(i).collisionBox.intersects(rocket.collisionBox)) {
-			System.out.println("ouch");
 			rocket.isActive=false;
 			aliens.get(i).isActive=false;
 		}
@@ -74,6 +77,7 @@ public void checkCollision() {
 			if(aliens.get(i).collisionBox.intersects(projectiles.get(j).collisionBox)) {
 				aliens.get(i).isActive=false;
 				projectiles.get(j).isActive=false;
+				score++;
 			}
 		}
 	}

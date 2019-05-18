@@ -8,6 +8,7 @@ import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 
 import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -99,7 +100,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.setColor(Color.yellow);
 		g.drawString("GAME OVER", 100, 150);
 		g.setFont(otherFont);
-		g.drawString("You killed enemies", 150, 300);
+		g.drawString("You killed " +manager.score+" enemies", 150, 300);
 		g.drawString("Press ENTER to try again", 100, 430);
 	}
 
@@ -126,6 +127,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 			if (current == end) {
 				current = menu;
+				rocket = new Rocketship(225, 650, 50, 50);
+				manager = new ObjectManager(rocket);
 			} else {
 				current++;
 				if (current == game) {
@@ -133,6 +136,11 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 				} else if (current == end) {
 					alienSpawn.stop();
 				}
+			}
+		}
+		if(current==menu) {
+			if(e.getKeyCode()==KeyEvent.VK_SPACE) {
+				JOptionPane.showMessageDialog(null, "Arrow keys to move, space to fire. Kill to survive.");
 			}
 		}
 		if (current == game) {
