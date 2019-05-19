@@ -319,7 +319,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 				}else {
 					player.speed=2;
 				}
-			}else if(key==KeyEvent.VK_K) {
+			}else if(key==KeyEvent.VK_A) {
 				player.left=true;
 				if(isPowerUp) {
 					player.speed=4;
@@ -348,7 +348,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		case KeyEvent.VK_S:
 			player.down=false;
 			break;
-		case KeyEvent.VK_K:
+		case KeyEvent.VK_A:
 			player.left=false;
 			break;
 		case KeyEvent.VK_D:
