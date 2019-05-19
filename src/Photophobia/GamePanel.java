@@ -25,8 +25,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	PowerUp shield;
 	boolean isPowerUp;
 	int rand;
-	int x,y;
-	boolean right=true;
+	int x;
+	int playerX,playerY;
+	int speed=1;
+	boolean right=true,up=false,down=false,left=false;
 	boolean intersectsLight=false;
 	public GamePanel() {
 		title = new Font("", Font.BOLD, 48);
@@ -296,39 +298,57 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			System.out.println(current);
 		}else if(current==game) {
 			if(key==KeyEvent.VK_W) {
+				player.up=true;
 				if(isPowerUp) {
-					player.up(15);
+					player.speed=4;
 				}else {
-					player.up(10);
-				}
-			}else if(key==KeyEvent.VK_D) {
-				if(isPowerUp) {
-					player.right(15);
-				}else {
-					player.right(10);
-				}
-			}else if(key==KeyEvent.VK_A) {
-				if(isPowerUp) {
-					player.left(15);
-				}else {
-					player.left(10);
-				}
-			}else if(key==KeyEvent.VK_S) {
-				if(isPowerUp) {
-					player.down(15);
-				}else {
-					player.down(10);
+					player.speed=2;
 				}
 			}else if(key==KeyEvent.VK_ENTER) {
 				current++;
+			}else if(key==KeyEvent.VK_S) {
+				player.down=true;
+				if(isPowerUp) {
+					player.speed=4;
+				}else {
+					player.speed=2;
+				}
+			}else if(key==KeyEvent.VK_D) {
+				player.right=true;
+				if(isPowerUp) {
+					player.speed=4;
+				}else {
+					player.speed=2;
+				}
+			}else if(key==KeyEvent.VK_A) {
+				player.left=true;
+				if(isPowerUp) {
+					player.speed=4;
+				}else {
+					player.speed=2;
+				}
 			}
 		}
 		
 	}
+	
 	@Override
 	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
+		int key = e.getKeyCode();
+		switch(key) {
+		case KeyEvent.VK_W:
+			player.up=false;
+			break;
+		case KeyEvent.VK_S:
+			player.down=false;
+			break;
+		case KeyEvent.VK_D:
+			player.right=false;
+			break;
+		case KeyEvent.VK_A:
+			player.left=false;
+			break;
+		}
 	}
 
 }
