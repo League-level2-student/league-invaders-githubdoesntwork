@@ -28,6 +28,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	int x;
 	int playerX,playerY;
 	int speed=1;
+	//Wall wall;
 	boolean right=true,up=false,down=false,left=false;
 	boolean intersectsLight=false;
 	public GamePanel() {
@@ -118,6 +119,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		lights.draw(g);
 		shield = new PowerUp(150,150,0,0);
 		shield.draw(g);
+	//	wall = new Wall(0,0,0,0);
+	//	wall.draw(g);
 		if(player.playerRect.intersects(lights.lightRect)) {
 			intersectsLight=true;
 		}else {
@@ -161,6 +164,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			lights.draw(g);
 			shield = new PowerUp(150,150,0,0);
 			shield.draw(g);
+	//		wall = new Wall(200,200,100,100);
+	//		wall.draw(g);
 			if(player.playerRect.intersects(lights.lightRect)) {
 				intersectsLight=true;
 			}else {
