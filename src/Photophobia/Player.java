@@ -6,7 +6,6 @@ import java.awt.Rectangle;
 public class Player extends GameObject{
 	int speed;
 	boolean up=false,down=false,left=false,right=false;
-	Rectangle playerRect;
 	Wall wall= new Wall(0,0,0,0, null);		//
 	public Player(int a, int b, int c, int d) {
 		super(a, b, c, d);
@@ -38,7 +37,6 @@ public class Player extends GameObject{
 				x=495;
 			}
 		}
-		playerRect = new Rectangle(x,y,width,height);
 		g.fillRect(x, y, width, height);
 	}
 	

@@ -6,7 +6,6 @@ import java.awt.Rectangle;
 
 public class Wall extends GameObject{
 	Color groundColor = new Color(99, 72, 72);
-	Rectangle wallRect;
 	int formerX, formerY;
 	Player player;
 	public Wall(int a, int b, int c, int d, Player p) {
@@ -15,10 +14,9 @@ public class Wall extends GameObject{
 	}
 	public void draw(Graphics g) {
 		g.setColor(groundColor);
-		wallRect = new Rectangle(x,y,width,height);
 		g.fillRect(x, y, width, height);
 		player.draw(g);
-		if(wallRect.intersects(player.playerRect)) {
+		if(rect.intersects(player.rect)) {
 			player.x=formerX;
 			player.y=formerY;
 		}
