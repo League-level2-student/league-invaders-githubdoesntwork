@@ -7,7 +7,7 @@ public class Player extends GameObject{
 	int speed;
 	boolean up=false,down=false,left=false,right=false;
 	Rectangle playerRect;
-	Wall wall= new Wall(0,0,0,0, null);
+	Wall wall= new Wall(0,0,0,0, null);		//
 	public Player(int a, int b, int c, int d) {
 		super(a, b, c, d);
 	}
