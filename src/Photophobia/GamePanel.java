@@ -28,7 +28,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	int x;
 	int playerX,playerY;
 	int speed=1;
-	Wall wall;
+//	Wall wall;
 	boolean right=true,up=false,down=false,left=false;
 	boolean intersectsLight=false;
 	public GamePanel() {
@@ -119,14 +119,14 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		lights.draw(g);
 		shield = new PowerUp(150,150,0,0);
 		shield.draw(g);
-		wall = new Wall(0,0,0,0, player);			//
-		wall.draw(g);								//
-		if(player.rect.intersects(lights.horizRect)) {
+	//	wall = new Wall(0,0,0,0, player);			//
+	//	wall.draw(g);								//
+		if(player.playerRect.intersects(lights.horizRect)) {
 			intersectsLight=true;
 		}else {
 			intersectsLight=false;
 		}
-		if(exit.intersects(player.rect)) {
+		if(exit.intersects(player.playerRect)) {
 			level=2;
 			isPowerUp=false;
 			current=game;
@@ -137,7 +137,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 				rand=0;
 			}
 			current=gameOver;
-			}else if(player.rect.intersects(shield.rect)) {
+			}else if(player.playerRect.intersects(shield.rect)) {
 				isPowerUp=true;
 			}
 		}else if(level==2) {
@@ -164,14 +164,14 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			lights.draw(g);
 			shield = new PowerUp(150,150,0,0);
 			shield.draw(g);
-			wall = new Wall(200,200,100,100, player);	//
-			wall.draw(g);								//
-			if(player.rect.intersects(lights.vertRect)) {
+		//	wall = new Wall(200,200,100,100, player);	//
+		//	wall.draw(g);								//
+			if(player.playerRect.intersects(lights.vertRect)) {
 				intersectsLight=true;
 			}else {
 				intersectsLight=false;
 			}
-			if(exit.intersects(player.rect)) {
+			if(exit.intersects(player.playerRect)) {
 				level=3;
 				x=150;
 				isPowerUp=false;
@@ -183,7 +183,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 					rand=0;
 				}
 				current=gameOver;
-				}else if(player.rect.intersects(shield.rect)) {
+				}else if(player.playerRect.intersects(shield.rect)) {
 					isPowerUp=true;
 				}
 		}else if(level==3) {
@@ -220,12 +220,12 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			lights.draw(g);
 			shield = new PowerUp(150,150,0,0);
 			shield.draw(g);
-			if(player.rect.intersects(lights.movingRect)) {
+			if(player.playerRect.intersects(lights.movingRect)) {
 				intersectsLight=true;
 			}else {
 				intersectsLight=false;
 			}
-			if(exit.intersects(player.rect)) {
+			if(exit.intersects(player.playerRect)) {
 				level=1;
 				isPowerUp=false;
 				current=game;
@@ -236,7 +236,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 					rand=0;
 				}
 				current=gameOver;
-				}else if(player.rect.intersects(shield.rect)) {
+				}else if(player.playerRect.intersects(shield.rect)) {
 					isPowerUp=true;
 				}
 		}
