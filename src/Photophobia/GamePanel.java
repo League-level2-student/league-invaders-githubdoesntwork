@@ -95,7 +95,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.drawString("Press space to start", 210, 400);
 	}
 	public void drawGame(Graphics g) {
-		if(level==1) {
 		Color gameColor = new Color(35,35,35);
 		g.setColor(gameColor);
 		g.fillRect(0, 0, 600, 500);
@@ -112,6 +111,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			g.setColor(playerColor);
 		}
 		player.draw(g);
+		if(level==1) {
 		g.setColor(Color.black);
 		Rectangle exit = new Rectangle(350, 230, 30, 30);
 		g.fillRect(350, 230, 30, 30);
@@ -141,22 +141,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 				isPowerUp=true;
 			}
 		}else if(level==2) {
-			Color gameColor = new Color(35,35,35);
-			g.setColor(gameColor);
-			g.fillRect(0, 0, 600, 500);
-			Color groundColor = new Color(99, 72, 72);
-			g.setColor(groundColor);
-			g.fillRect(0, 420, 600, 80);
-			g.fillRect(0, 0, 600, 80);
-			g.fillRect(0,0,80,600);
-			g.fillRect(520, 0, 80, 600);
-			if(isPowerUp) {
-				g.setColor(Color.red);
-			}else {
-				Color playerColor = new Color(153,153,153);
-				g.setColor(playerColor);
-			}
-			player.draw(g);
+			
 			g.setColor(Color.black);
 			Rectangle exit = new Rectangle(420, 120, 30, 30);
 			g.fillRect(420, 120, 30, 30);
@@ -187,22 +172,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 					isPowerUp=true;
 				}
 		}else if(level==3) {
-			Color gameColor = new Color(35,35,35);
-			g.setColor(gameColor);
-			g.fillRect(0, 0, 600, 500);
-			Color groundColor = new Color(99, 72, 72);
-			g.setColor(groundColor);
-			g.fillRect(0, 420, 600, 80);
-			g.fillRect(0, 0, 600, 80);
-			g.fillRect(0,0,80,600);
-			g.fillRect(520, 0, 80, 600);
-			if(isPowerUp) {
-				g.setColor(Color.red);
-			}else {
-				Color playerColor = new Color(153,153,153);
-				g.setColor(playerColor);
-			}
-			player.draw(g);
 			g.setColor(Color.black);
 			Rectangle exit = new Rectangle(420, 380, 30, 30);
 			g.fillRect(420, 380, 30, 30);
