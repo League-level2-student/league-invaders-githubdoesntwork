@@ -176,8 +176,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			Rectangle exit = new Rectangle(420, 380, 30, 30);
 			g.fillRect(420, 380, 30, 30);
 			if(right) {
-				x+=2;
-			}else {
+		 		x+=2;
+		 	}else {
 				x-=2;
 			}
 			if(x>200) {
