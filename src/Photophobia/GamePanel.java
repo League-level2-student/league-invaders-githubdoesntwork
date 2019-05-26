@@ -115,7 +115,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.setColor(Color.black);
 		Rectangle exit = new Rectangle(350, 230, 30, 30);
 		g.fillRect(350, 230, 30, 30);
-		lights = new Lights(150,350, 400,350,"horizBeam");
+		lights = new Lights(150,300, 400,300,"horizBeam");
 		lights.draw(g);
 		shield = new PowerUp(150,150,0,0);
 		shield.draw(g);
@@ -241,8 +241,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.drawString("The red rectangle gives the player a sizable speed boost.", 10,250);
 		g.drawString("Near the end of the level, the black square is the exit,", 5, 280);
 		g.drawString("which is triggered upon contact. Finally, the yellow represents", 5, 310);
-		g.drawString("a light, which kills the player unless he/she has a shield.", 5, 340);
-		g.drawString("The player can navigate with 'WASD' keys.", 5, 370);
+		g.drawString("a light, which kills the player.The player can navigate ", 5, 340);
+		g.drawString("with 'WASD' keys.", 5, 370);
 		g.drawString("Press space to return to menu", 150, 400);
 	
 	}
