@@ -23,5 +23,8 @@
 //			player.y=formerY;
 //		}
 //	}
+//	public void update() {
+//		
+//	}
 //
 //}
