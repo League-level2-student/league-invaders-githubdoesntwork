@@ -122,7 +122,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		}
 		player.draw(g);
 		if (level == 1) {
-			createLvl1();
 			exit.draw(g);
 			lights.draw(g);
 			shield.draw(g);
@@ -134,7 +133,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 				intersectsLight = false;
 			}
 		} else if (level == 2) {
-			createLvl2();
 			exit.draw(g);
 			lights.draw(g);
 			shield.draw(g);
@@ -146,7 +144,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 				intersectsLight = false;
 			}
 		} else if (level == 3) {
-			createLvl3();
 			exit.draw(g);
 			if (right) {
 				x += 2;
@@ -158,6 +155,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			} else if (x < 150) {
 				right = true;
 			}
+			lights = new Lights(x, 200, x, 300, "movingHoriz");
 			lights.draw(g);
 			shield.draw(g);
 			if (player.playerRect.intersects(lights.movingRect)) {
@@ -169,6 +167,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		}
 		if (player.playerRect.intersects(shield.rect)) {
 			isPowerUp = true;
+			shield= new PowerUp(0,0,0,0);      ///////////
 		} else if (intersectsLight) {
 			level = 1;
 			rand++;
@@ -182,7 +181,12 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			if (level > 3) {
 				level = 1;
 			}
-			if (level == 3) {
+			if(level==1) {
+				createLvl1();
+			}else if(level==2) {
+				createLvl2();
+			}else if(level==3) {
+				createLvl3();
 				x = 150;
 			}
 			isPowerUp = false;
@@ -230,19 +234,17 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
 		int key = e.getKeyCode();
-		System.out.println(key);
 		if (current == menu && key == KeyEvent.VK_SPACE) {
 			level = 1;
 			isPowerUp = false;
 			player = new Player(288, 238, 25, 25);
 			current = game;
+createLvl1();
 			System.out.println(current);
 		} else if (current == instructions && key == KeyEvent.VK_SPACE) {
 			current = menu;
@@ -255,6 +257,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			current = menu;
 			System.out.println(current);
 		} else if (current == game) {
+			System.out.println(player.x+", "+player.y);
 			if (key == KeyEvent.VK_W) {
 				player.up = true;
 				if (isPowerUp) {
@@ -302,18 +305,18 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	public void createLvl1() {
 		exit = new Exit(350, 230, 30, 30);
 		lights = new Lights(150, 300, 400, 300, "horizBeam");
-		shield = new PowerUp(150, 150, 0, 0);
+		shield = new PowerUp(150, 150, 30, 30);
 	}
 
 	public void createLvl2() {
 		exit = new Exit(420, 120, 30, 30);
 		lights = new Lights(150, 200, 150, 300, "vertBeam");
-		shield = new PowerUp(150, 150, 0, 0);
+		shield = new PowerUp(150, 150, 30, 30);
 	}
 
 	public void createLvl3() {
 		exit = new Exit(420, 380, 30, 30);
-		lights = new Lights(x, 200, x, 300, "movingHoriz");
-		shield = new PowerUp(150, 150, 0, 0);
+		x=150;
+		shield = new PowerUp(150, 150, 30, 30);
 	}
 }

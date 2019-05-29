@@ -17,7 +17,7 @@ public void update(){
 }
 public void draw(Graphics g) {
 	g.setColor(Color.red);
-	rect = new Rectangle(x,y,30,30);
-	g.fillRect(x, y, 30, 30);
+	rect = new Rectangle(x,y,width,height);
+	g.fillRect(x, y, width, height);
 }
 }
