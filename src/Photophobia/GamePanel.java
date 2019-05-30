@@ -124,8 +124,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			exit.draw(g);
 			lights.draw(g);
 			shield.draw(g);
-			wall = new Wall(0, 0, 0, 0); //
-			wall.draw(g); //
 			if (player.playerRect.intersects(lights.horizRect)) {
 				intersectsLight = true;
 			} else {
@@ -135,7 +133,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			exit.draw(g);
 			lights.draw(g);
 			shield.draw(g);
-			wall = new Wall(200, 200, 100, 100); //
 			wall.draw(g); //
 			if (player.playerRect.intersects(lights.vertRect)) {
 				intersectsLight = true;
@@ -247,7 +244,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		if (current == menu && key == KeyEvent.VK_SPACE) {
 			level = 1;
 			isPowerUp = false;
-			player = new Player(288, 238, 25, 25);
+			player = new Player(288, 238, 10, 10);
 			current = game;
 			createLvl1();
 			System.out.println(current);
@@ -305,20 +302,23 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	}
 
 	public void createLvl1() {
-		exit = new Exit(350, 230, 30, 30);
+		exit = new Exit(350, 230, 20, 20);
 		lights = new Lights(150, 300, 400, 300, "horizBeam");
-		shield = new PowerUp(150, 150, 30, 30);
+		shield = new PowerUp(150, 150, 15, 15);
+		wall = null;
 	}
 
 	public void createLvl2() {
-		exit = new Exit(420, 120, 30, 30);
+		exit = new Exit(420, 120, 20, 20);
 		lights = new Lights(150, 200, 150, 300, "vertBeam");
-		shield = new PowerUp(150, 150, 30, 30);
+		shield = new PowerUp(150, 150, 15, 15);
+		wall = new Wall(200, 200, 100, 100); 
 	}
 
 	public void createLvl3() {
-		exit = new Exit(420, 380, 30, 30);
+		exit = new Exit(420, 380, 20, 20);
 		x = 150;
 		shield = new PowerUp(150, 150, 30, 30);
+		wall = null;
 	}
 }
