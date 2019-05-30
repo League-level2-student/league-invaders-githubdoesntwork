@@ -27,9 +27,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	boolean isPowerUp;
 	int rand;
 	int x;
-	int playerX, playerY;
-	int speed = 1;
-//	Wall wall;
+//	int formerX, formerY;
+	Wall wall;
 	boolean right = true, up = false, down = false, left = false;
 	boolean intersectsLight = false;
 
@@ -125,8 +124,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			exit.draw(g);
 			lights.draw(g);
 			shield.draw(g);
-			// wall = new Wall(0,0,0,0, player); //
-			// wall.draw(g); //
+			wall = new Wall(0, 0, 0, 0); //
+			wall.draw(g); //
 			if (player.playerRect.intersects(lights.horizRect)) {
 				intersectsLight = true;
 			} else {
@@ -136,8 +135,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			exit.draw(g);
 			lights.draw(g);
 			shield.draw(g);
-			// wall = new Wall(200,200,100,100, player); //
-			// wall.draw(g); //
+			wall = new Wall(200, 200, 100, 100); //
+			wall.draw(g); //
 			if (player.playerRect.intersects(lights.vertRect)) {
 				intersectsLight = true;
 			} else {
@@ -167,7 +166,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		}
 		if (player.playerRect.intersects(shield.rect)) {
 			isPowerUp = true;
-			shield= new PowerUp(0,0,0,0);      ///////////
+			shield = new PowerUp(0, 0, 0, 0); ///////////
 		} else if (intersectsLight) {
 			level = 1;
 			rand++;
@@ -181,16 +180,22 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			if (level > 3) {
 				level = 1;
 			}
-			if(level==1) {
+			if (level == 1) {
 				createLvl1();
-			}else if(level==2) {
+			} else if (level == 2) {
 				createLvl2();
-			}else if(level==3) {
+			} else if (level == 3) {
 				createLvl3();
 				x = 150;
 			}
 			isPowerUp = false;
 			current = game;
+		}
+		if (wall != null) {
+			if (player.futureRect.intersects(wall.wallRect)) {
+				player.x = player.formerX;
+				player.y = player.formerY;
+			}
 		}
 	}
 
@@ -244,7 +249,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			isPowerUp = false;
 			player = new Player(288, 238, 25, 25);
 			current = game;
-createLvl1();
+			createLvl1();
 			System.out.println(current);
 		} else if (current == instructions && key == KeyEvent.VK_SPACE) {
 			current = menu;
@@ -257,14 +262,11 @@ createLvl1();
 			current = menu;
 			System.out.println(current);
 		} else if (current == game) {
-			System.out.println(player.x+", "+player.y);
+			//formerX=player.x;
+			//formerY=player.y;
+			System.out.println(player.x + ", " + player.y);
 			if (key == KeyEvent.VK_W) {
 				player.up = true;
-				if (isPowerUp) {
-					player.speed = 4;
-				} else {
-					player.speed = 2;
-				}
 			} else if (key == KeyEvent.VK_ENTER) {
 				current++;
 			} else if (key == KeyEvent.VK_S) {
@@ -316,7 +318,7 @@ createLvl1();
 
 	public void createLvl3() {
 		exit = new Exit(420, 380, 30, 30);
-		x=150;
+		x = 150;
 		shield = new PowerUp(150, 150, 30, 30);
 	}
 }
