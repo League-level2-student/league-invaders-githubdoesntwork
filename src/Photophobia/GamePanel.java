@@ -8,6 +8,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.InputStream;
+import java.net.URL;
 
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -27,6 +29,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	boolean isPowerUp;
 	int rand;
 	int x;
+	final String wallURL = "https://freesound.org/people/simon.rue/sounds/49963/";
 //	int formerX, formerY;
 	Wall wall;
 	boolean right = true, up = false, down = false, left = false;
@@ -124,20 +127,48 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			exit.draw(g);
 			lights.draw(g);
 			shield.draw(g);
-			if (player.playerRect.intersects(lights.horizRect)) {
-				intersectsLight = true;
-			} else {
-				intersectsLight = false;
+			if(lights.getLightType()=="moving") {
+				if(player.playerRect.intersects(lights.movingRect)) {
+					intersectsLight=true;
+				}else {
+					intersectsLight=false;
+				}
+			}else if(lights.getLightType()=="vert") {
+				if(player.playerRect.intersects(lights.vertRect)) {
+				intersectsLight=true;
+			}else {
+				intersectsLight=false;
+			}
+			}else if(lights.getLightType()=="horiz") {
+				if(player.playerRect.intersects(lights.horizRect)) {
+				intersectsLight=true;
+			}else {
+				intersectsLight=false;
+			}
 			}
 		} else if (level == 2) {
 			exit.draw(g);
 			lights.draw(g);
 			shield.draw(g);
 			wall.draw(g); //
-			if (player.playerRect.intersects(lights.vertRect)) {
-				intersectsLight = true;
-			} else {
-				intersectsLight = false;
+			if(lights.getLightType()=="moving") {
+				if(player.playerRect.intersects(lights.movingRect)) {
+					intersectsLight=true;
+				}else {
+					intersectsLight=false;
+				}
+			}else if(lights.getLightType()=="vert") {
+				if(player.playerRect.intersects(lights.vertRect)) {
+				intersectsLight=true;
+			}else {
+				intersectsLight=false;
+			}
+			}else if(lights.getLightType()=="horiz") {
+				if(player.playerRect.intersects(lights.horizRect)) {
+				intersectsLight=true;
+			}else {
+				intersectsLight=false;
+			}
 			}
 		} else if (level == 3) {
 			exit.draw(g);
@@ -154,10 +185,24 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			lights = new Lights(x, 200, x, 300, "movingHoriz");
 			lights.draw(g);
 			shield.draw(g);
-			if (player.playerRect.intersects(lights.movingRect)) {
-				intersectsLight = true;
-			} else {
-				intersectsLight = false;
+			if(lights.getLightType()=="moving") {
+				if(player.playerRect.intersects(lights.movingRect)) {
+					intersectsLight=true;
+				}else {
+					intersectsLight=false;
+				}
+			}else if(lights.getLightType()=="vert") {
+				if(player.playerRect.intersects(lights.vertRect)) {
+				intersectsLight=true;
+			}else {
+				intersectsLight=false;
+			}
+			}else if(lights.getLightType()=="horiz") {
+				if(player.playerRect.intersects(lights.horizRect)) {
+				intersectsLight=true;
+			}else {
+				intersectsLight=false;
+			}
 			}
 
 		}
@@ -209,7 +254,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		} else if (rand == 0) {
 			g.drawString("Try harder than that", 190, 250);
 		} else if (rand == 2) {
-			g.drawString("Life is hard", 230, 250);
+			g.drawString("Dying is not the objective", 165, 250);
 		}
 	}
 
@@ -302,8 +347,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	}
 
 	public void createLvl1() {
-		exit = new Exit(350, 230, 20, 20);
-		lights = new Lights(150, 300, 400, 300, "horizBeam");
+		exit = new Exit(350, 230, 20, 20);                     					//ORIGINAL TESTER
+		lights = new Lights(150, 200, 150, 300, "vertBeam");
 		shield = new PowerUp(150, 150, 15, 15);
 		wall = null;
 	}

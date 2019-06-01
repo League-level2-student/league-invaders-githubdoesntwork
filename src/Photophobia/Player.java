@@ -8,42 +8,69 @@ public class Player extends GameObject {
 	boolean up = false, down = false, left = false, right = false;
 	Rectangle playerRect, futureRect;
 	int formerX, formerY;
-
-//	Wall wall= new Wall(0,0,0,0, null);		//
+//	Wall wall;
+//	Rectangle wallRect;
 	public Player(int a, int b, int c, int d) {
 		super(a, b, c, d);
 	}
 
 	public void draw(Graphics g) {
+//		if(wall.wallRect!=null) {
+//			wallRect = wall.wallRect;
+//		}
 		formerX = x;
 		formerY = y;
 		if (up) {
-			// wall.formerY=y;
 			y -= speed;
+//			if(wallRect!=null) {
+//				if(futureRect!=null) {
+//				if(wallRect.intersects(futureRect)) {
+//					formerY=y;
+//				}
+//				}
+//			}
 			if (y < 80) {
 				y = 80;
 			}
 		}
 		if (down) {
-			// wall.formerY=y;
 			y += speed;
-			if (y + 25 > 420) {
-				y = 395;
+//			if(wallRect!=null) {
+//				if(futureRect!=null) {
+//					if(wallRect.intersects(futureRect)) {
+//						formerY=y;
+//					}
+//					}
+//			}
+			if (y + 10 > 420) {
+				y = 410;
 			}
 		}
 		if (left) {
-			// wall.formerX=x;
 			x -= speed;
+//			if(wallRect!=null) {
+//				if(futureRect!=null) {
+//					if(wallRect.intersects(futureRect)) {
+//						formerX=x;
+//					}
+//					}
+//			}
 			if (x < 80) {
 				x = 80;
 			}
 
 		}
 		if (right) {
-			// wall.formerX=x;
 			x += speed;
-			if (x + 25 > 520) {
-				x = 495;
+//			if(wallRect!=null) {
+//				if(futureRect!=null) {
+//					if(wallRect.intersects(futureRect)) {
+//						formerX=x;
+//					}
+//					}
+//			}
+			if (x + 10 > 520) {
+				x = 510;
 			}
 		}
 		playerRect = new Rectangle(x, y, width, height);
