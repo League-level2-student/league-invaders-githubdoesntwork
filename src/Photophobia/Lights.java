@@ -5,17 +5,22 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 
 public class Lights extends GameObject{
-	int firstX, firstY, secondX, secondY;
+	int firstX, firstY, secondX, secondY, buttonX, buttonY;
 	String type;
-	Rectangle horizRect, vertRect, movingRect;
+	Rectangle horizRect, vertRect, movingRect, buttonRectVert, buttonHoriz, buttonVert, buttonRectHoriz;
 	boolean right=true;
-	public Lights(int a, int b, int c, int d, String t) {
+	boolean beamOnVert=true, beamOnHoriz=true;
+	Color vertButtonColor = new Color(93, 255, 0);
+	Color horizButtonColor = new Color(255, 182, 0);
+	public Lights(int a, int b, int c, int d, String t, int y, int z) {
 		super(a, b, c, d);
 		firstX = a;
 		firstY=b;
 		secondX=c;
 		secondY=d;
 		type = t; 
+		buttonX=y;
+		buttonY=z;
 	}
 public void draw(Graphics g) {
 	if(type=="horizBeam") {
@@ -38,7 +43,37 @@ public void draw(Graphics g) {
 		g.fillRect(firstX+3, firstY+5, 7, secondY-firstY+15);
 		g.setColor(Color.DARK_GRAY);
 		g.fillOval(firstX-1, firstY, 15, 15);
-	}  
+	}else if(type=="buttonBeamVert") {
+		if(beamOnVert) {
+			g.setColor(Color.yellow);
+			buttonRectVert = new Rectangle(firstX+5, firstY+5,5,secondY-firstY+15);
+			g.fillRect(firstX+5, firstY+5, 5, secondY-firstY+15);
+		}else {
+			buttonRectVert=new Rectangle(0,0,0,0);
+		}
+		
+		g.setColor(Color.DARK_GRAY);
+		g.fillOval(firstX, firstY, 15, 15);
+		g.fillOval(secondX, secondY+15, 15, 15);
+		g.setColor(vertButtonColor);
+		g.fillRect(buttonX, buttonY, 15, 15);
+		buttonVert = new Rectangle(buttonX, buttonY, 15, 15);
+	}else if(type=="buttonBeamHoriz") {
+		if(beamOnHoriz) {
+			g.setColor(Color.yellow);
+			buttonRectHoriz = new Rectangle(firstX+5, firstY+5, secondX-firstX+15, 5);
+			g.fillRect(firstX+5, firstY+5, secondX-firstX+15, 5);
+		}else {
+			buttonRectHoriz=new Rectangle(0,0,0,0);
+		}
+		
+		g.setColor(Color.DARK_GRAY); 
+		g.fillOval(firstX, firstY, 15, 15);
+		g.fillOval(secondX+15, secondY, 15, 15);
+		g.setColor(horizButtonColor);
+		g.fillRect(buttonX, buttonY, 15, 15);
+		buttonHoriz = new Rectangle(buttonX, buttonY, 15, 15);
+	}
 }
 public void update() {
 }
@@ -49,6 +84,10 @@ public String getLightType() {
 			return "vert";
 		}if(type=="movingHoriz") {
 			return "moving";
+		}if(type=="buttonBeamVert") {
+			return"vertButton";
+		}if(type=="buttonBeamHoriz") {
+			return"horizButton";
 		}
 		return "null";  
 }
