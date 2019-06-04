@@ -259,15 +259,15 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.setColor(Color.yellow);
 		g.setFont(title);
 		g.drawString("Level", 220, 100);
-		g.drawString("Completed", completedX, 270);
+		g.drawString("Completed", completedX, 200);
 		g.setColor(new Color(12, 12, 12));
-		g.fillRect(completedPlayerX, 400, 70, 70);
+		g.fillRect(completedPlayerX, 330, 70, 70);
 		g.setColor(Color.gray);
-		g.fillRect(completedPlayerX+10, 410, 50,50);
+		g.fillRect(completedPlayerX+10, 340, 50,50);
 		g.setColor(Color.black);
-		g.fillRect(completedPlayerX+20, 420, 10, 10);
-		g.fillRect(completedPlayerX+50, 420, 10, 10);
-		g.fillRect(completedPlayerX+20, 440, 40, 10);
+		g.fillRect(completedPlayerX+20, 350, 10, 10);
+		g.fillRect(completedPlayerX+50, 350, 10, 10);
+		g.fillRect(completedPlayerX+20, 370, 40, 10);
 		completedX+=3;
 		completedPlayerX+=4;
 		if(completedX>150) {
@@ -390,7 +390,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
 	public void createLvl5() {
 		exit = new Exit(420, 120, 20, 20);
-		lights = new Lights(100, 200, 150, 200, "buttonBeamHoriz", 300, 100);
+		lights = new Lights(100, 300, 300, 300, "buttonBeamHoriz", 300, 100);
 		shield = new PowerUp(150, 150, 15, 15);
 		wall = new Wall(0,0,0,0);
 	}
