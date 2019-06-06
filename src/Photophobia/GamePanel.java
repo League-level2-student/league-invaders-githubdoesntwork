@@ -7,21 +7,24 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
+
 import javax.swing.JPanel;
 import javax.swing.Timer;
+
 @SuppressWarnings("serial")
 public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	final int menu = 0, game = 1, gameOver = 2, end = 3, instructions = 4, levelCompleted = 5;
 	int level = 1;
-	int completedX=-50;
-	int completedPlayerX=0;
+	int completedX = -50;
+	int completedPlayerX = 0;
 	int current = menu;
 	Font title;
 	Font normal;
 	Timer timer;
 	GameObject object;
 	Player player;
-	Lights lights;
+	ArrayList<Lights> lights = new ArrayList<Lights>();
 	PowerUp shield;
 	Exit exit;
 	boolean isPowerUp;
@@ -30,7 +33,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	// final String wallURL =
 	// "https://freesound.org/people/simon.rue/sounds/49963/";
 //	int formerX, formerY;
-	Wall wall;
+	ArrayList<Wall> walls = new ArrayList<Wall>();
 	boolean right = true, up = false, down = false, left = false;
 	boolean intersectsLight = false;
 
@@ -53,7 +56,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			drawEnd(g);
 		} else if (current == instructions) {
 			drawInstructions(g);
-		}else if(current==levelCompleted) {
+		} else if (current == levelCompleted) {
 			drawLevelCompleted(g);
 		}
 	}
@@ -62,8 +65,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	public void actionPerformed(ActionEvent e) {
 		repaint();
 	}
-
-	
 
 	public void drawMenu(Graphics g) {
 		g.setColor(Color.black);
@@ -97,15 +98,24 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		player.draw(g);
 		if (level == 1) {
 			exit.draw(g);
-			lights.draw(g);
+			for (Lights light : lights) {
+				light.draw(g);
+			}
 			shield.draw(g);
-			wall.draw(g);
-
+			if (walls != null) {
+				for (Wall wall : walls) {
+					wall.draw(g);
+				}
+			}
 		} else if (level == 2) {
 			exit.draw(g);
-			lights.draw(g);
+			for (Lights light : lights) {
+				light.draw(g);
+			}
 			shield.draw(g);
-			wall.draw(g); //
+			for (Wall wall : walls) {
+				wall.draw(g);
+			}
 
 		} else if (level == 3) {
 			exit.draw(g);
@@ -119,51 +129,61 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			} else if (x < 150) {
 				right = true;
 			}
-			lights = new Lights(x, 200, x, 300, "movingHoriz", 0, 0);
-			lights.draw(g);
-			shield.draw(g);
+			lights.removeAll(lights);
+			lights.add(new Lights(x, 200, x, 300, "movingHoriz", 0, 0));
+			for (Lights light : lights) {
+				light.draw(g);
+				shield.draw(g);
+			}
 
 		} else if (level == 4) {
-			exit.draw(g);
-			lights.draw(g);
-			shield.draw(g);
+			for (Lights light : lights) {
+				exit.draw(g);
+				light.draw(g);
+				shield.draw(g);
+			}
 		} else if (level == 5) {
-			exit.draw(g);
-			lights.draw(g);
-			shield.draw(g);
+			for (Lights light : lights) {
+				exit.draw(g);
+				light.draw(g);
+				shield.draw(g);
+			}
 
 		}
-		if (lights.getLightType() == "moving") {
-			if (player.playerRect.intersects(lights.movingRect)) {
-				intersectsLight = true;
-			} else {
-				intersectsLight = false;
-			}
-		} else if (lights.getLightType() == "vert") {
-			if (player.playerRect.intersects(lights.vertRect)) {
-				intersectsLight = true;
-			} else {
-				intersectsLight = false;
-			}
-		} else if (lights.getLightType() == "horiz") {
-			if (player.playerRect.intersects(lights.horizRect)) {
-				intersectsLight = true;
-			} else {
-				intersectsLight = false;
-			}
-		} else if (lights.getLightType() == "vertButton") {
-			if (player.playerRect.intersects(lights.buttonRectVert)) {
-				intersectsLight = true;
-			} else {
-				intersectsLight = false;
-			}
-		} else if (lights.getLightType() == "horizButton") {
-			if (player.playerRect.intersects(lights.buttonRectHoriz)) {
-				intersectsLight = true;
-			} else {
-				intersectsLight = false;
+		for (Lights light : lights) {
+			if (light.getLightType() == "moving") {
+				if (player.playerRect.intersects(light.movingRect)) {
+					intersectsLight = true;
+				} else {
+					intersectsLight = false;
+				}
+			} else if (light.getLightType() == "vert") {
+				if (player.playerRect.intersects(light.vertRect)) {
+					intersectsLight = true;
+				} else {
+					intersectsLight = false;
+				}
+			} else if (light.getLightType() == "horiz") {
+				if (player.playerRect.intersects(light.horizRect)) {
+					intersectsLight = true;
+				} else {
+					intersectsLight = false;
+				}
+			} else if (light.getLightType() == "vertButton") {
+				if (player.playerRect.intersects(light.buttonRectVert)) {
+					intersectsLight = true;
+				} else {
+					intersectsLight = false;
+				}
+			} else if (light.getLightType() == "horizButton") {
+				if (player.playerRect.intersects(light.buttonRectHoriz)) {
+					intersectsLight = true;
+				} else {
+					intersectsLight = false;
+				}
 			}
 		}
+
 		if (player.playerRect.intersects(shield.rect)) {
 			isPowerUp = true;
 			shield = new PowerUp(0, 0, 0, 0); ///////////
@@ -176,57 +196,56 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			current = gameOver;
 		}
 		if (exit.exitRect.intersects(player.playerRect)) {
-			completedX=-50;
-			completedPlayerX=-293;
-			 current=levelCompleted;	///////////////////LEVEL COMPLETED///////////
-//			 try {
-//				Thread.sleep(1000);
-//			} catch (InterruptedException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-			 int delay = 4000; //milliseconds
-			  ActionListener taskPerformer = new ActionListener() {
-			      public void actionPerformed(ActionEvent evt) {
-			    	  level++;
-						if (level > 5) {
-							level = 1;
-						}
-						if (level == 1) {
-							createLvl1();
-						} else if (level == 2) {
-							createLvl2();
-						} else if (level == 3) {
-							createLvl3();
-							x = 150;
-						} else if (level == 4) {
-							createLvl4();
-						} else if (level == 5) {
-							createLvl5();
-						}
-						isPowerUp = false;
-						current = game;
-			      }
-			  };
-			  Timer something = new Timer(delay, taskPerformer);
-			  something.start();
-			  something.setRepeats(false);
-			 
-			 
+			completedX = -50;
+			completedPlayerX = -440;
+			current = levelCompleted; /////////////////// LEVEL COMPLETED///////////
+			int delay = 2667; // milliseconds
+			ActionListener taskPerformer = new ActionListener() {
+				public void actionPerformed(ActionEvent evt) {
+					level++;
+					if (level > 5) {
+						level = 1;
+					}
+					if (level == 1) {
+						createLvl1();
+					} else if (level == 2) {
+						createLvl2();
+					} else if (level == 3) {
+						createLvl3();
+						x = 150;
+					} else if (level == 4) {
+						createLvl4();
+					} else if (level == 5) {
+						createLvl5();
+					}
+					isPowerUp = false;
+					current = game;
+				}
+			};
+			Timer something = new Timer(delay, taskPerformer);
+			something.start();
+			something.setRepeats(false);
+
 		}
-		if (wall != null) {
-			if (player.futureRect.intersects(wall.wallRect)) {
-				player.x = player.formerX;
-				player.y = player.formerY;
+		if (walls != null) {
+			for (Wall wall : walls) {
+				if (wall != null) {
+					if (player.futureRect.intersects(wall.wallRect)) {
+						player.x = player.formerX;
+						player.y = player.formerY;
+					}
+				}
 			}
 		}
-		if (lights.getLightType() == "vertButton") {
-			if (player.playerRect.intersects(lights.buttonVert)) {
-				lights.beamOnVert = false;
-			}
-		} else if (lights.getLightType() == "horizButton") {
-			if (player.playerRect.intersects(lights.buttonHoriz)) {
-				lights.beamOnHoriz = false;
+		for (Lights light : lights) {
+			if (light.getLightType() == "vertButton") {
+				if (player.playerRect.intersects(light.buttonVert)) {
+					light.beamOnVert = false;
+				}
+			} else if (light.getLightType() == "horizButton") {
+				if (player.playerRect.intersects(light.buttonHoriz)) {
+					light.beamOnHoriz = false;
+				}
 			}
 		}
 
@@ -263,16 +282,20 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.setColor(new Color(12, 12, 12));
 		g.fillRect(completedPlayerX, 330, 70, 70);
 		g.setColor(Color.gray);
-		g.fillRect(completedPlayerX+10, 340, 50,50);
+		g.fillRect(completedPlayerX + 10, 340, 50, 50);
 		g.setColor(Color.black);
-		g.fillRect(completedPlayerX+20, 350, 10, 10);
-		g.fillRect(completedPlayerX+50, 350, 10, 10);
-		g.fillRect(completedPlayerX+20, 370, 40, 10);
-		completedX+=3;
-		completedPlayerX+=4;
-		if(completedX>150) {
-			completedX=150;
+		g.fillRect(completedPlayerX + 20, 350, 10, 10);
+		g.fillRect(completedPlayerX + 50, 350, 10, 10);
+		g.fillRect(completedPlayerX + 20, 370, 40, 10);
+		completedX += 3;
+		completedPlayerX += 6;
+		if (completedX > 150) {
+			completedX = 150;
 		}
+		if (walls != null) {
+			walls.removeAll(walls);
+		}
+		lights.removeAll(lights);
 	}
 
 	public void drawInstructions(Graphics g) {
@@ -305,6 +328,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			isPowerUp = false;
 			player = new Player(288, 238, 10, 10);
 			current = game;
+			if (walls != null) {
+				walls.removeAll(walls);
+			}
+			lights.removeAll(lights);
 			createLvl1();
 			System.out.println(current);
 		} else if (current == instructions && key == KeyEvent.VK_SPACE) {
@@ -361,38 +388,38 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	}
 
 	public void createLvl1() {
-		exit = new Exit(470, 230, 20, 20); // ORIGINAL TESTER
-		lights = new Lights(400, 150, 400, 300, "vertBeam", 0, 0);
+		exit = new Exit(470, 230, 20, 20);
+		lights.add(new Lights(400, 150, 400, 300, "vertBeam", 0, 0));
 		shield = new PowerUp(0, 0, 0, 0);
-		wall = new Wall(0,0,200,200);
+		walls.add(new Wall(0, 0, 200, 200));
 	}
 
 	public void createLvl2() {
 		exit = new Exit(420, 120, 20, 20);
-		lights = new Lights(150, 200, 150, 300, "vertBeam", 0, 0);
+		lights.add(new Lights(150, 200, 150, 300, "vertBeam", 0, 0));
 		shield = new PowerUp(150, 150, 15, 15);
-		wall = new Wall(200, 200, 100, 100);
+		walls.add(new Wall(200, 200, 100, 100));
 	}
 
 	public void createLvl3() {
 		exit = new Exit(420, 380, 20, 20);
 		x = 150;
 		shield = new PowerUp(150, 150, 15, 15);
-		wall = null;
+		walls = null;
 	}
 
 	public void createLvl4() {
 		exit = new Exit(470, 230, 20, 20);
-		lights = new Lights(400, 150, 400, 300, "buttonBeamVert", 200, 100);
+		lights.add(new Lights(400, 150, 400, 300, "buttonBeamVert", 200, 100));
 		shield = new PowerUp(100, 200, 15, 15);
-		wall = null;
+		walls = null;
 	}
 
 	public void createLvl5() {
 		exit = new Exit(420, 120, 20, 20);
-		lights = new Lights(100, 300, 300, 300, "buttonBeamHoriz", 300, 100);
+		lights.add(new Lights(100, 300, 300, 300, "buttonBeamHoriz", 300, 100));
 		shield = new PowerUp(150, 150, 15, 15);
-		wall = new Wall(0,0,0,0);
+		walls = null;
 	}
 
 }
