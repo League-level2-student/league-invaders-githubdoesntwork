@@ -199,7 +199,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			completedX = -50;
 			completedPlayerX = -440;
 			current = levelCompleted; /////////////////// LEVEL COMPLETED///////////
-			int delay = 2667; // milliseconds
+			int delay = 3000; // milliseconds
 			ActionListener taskPerformer = new ActionListener() {
 				public void actionPerformed(ActionEvent evt) {
 					level++;
@@ -405,21 +405,21 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		exit = new Exit(420, 380, 20, 20);
 		x = 150;
 		shield = new PowerUp(150, 150, 15, 15);
-		walls = null;
+		walls.add(new Wall(0,0,0,0));
 	}
 
 	public void createLvl4() {
 		exit = new Exit(470, 230, 20, 20);
 		lights.add(new Lights(400, 150, 400, 300, "buttonBeamVert", 200, 100));
 		shield = new PowerUp(100, 200, 15, 15);
-		walls = null;
+		walls.add(new Wall(0,0,0,0));
 	}
 
 	public void createLvl5() {
 		exit = new Exit(420, 120, 20, 20);
 		lights.add(new Lights(100, 300, 300, 300, "buttonBeamHoriz", 300, 100));
 		shield = new PowerUp(150, 150, 15, 15);
-		walls = null;
+		walls.add(new Wall(0,0,0,0));
 	}
 
 }
