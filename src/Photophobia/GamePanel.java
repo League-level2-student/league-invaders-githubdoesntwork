@@ -30,9 +30,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	boolean isPowerUp;
 	int rand;
 	int x;
-	// final String wallURL =
-	// "https://freesound.org/people/simon.rue/sounds/49963/";
-//	int formerX, formerY;
 	ArrayList<Wall> walls = new ArrayList<Wall>();
 	boolean right = true, up = false, down = false, left = false;
 	boolean intersectsLight = false;
@@ -186,7 +183,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
 		if (player.playerRect.intersects(shield.rect)) {
 			isPowerUp = true;
-			shield = new PowerUp(0, 0, 0, 0); ///////////
+			shield = new PowerUp(0, 0, 0, 0); 
 		} else if (intersectsLight) {
 			level = 1;
 			rand++;
@@ -198,8 +195,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		if (exit.exitRect.intersects(player.playerRect)) {
 			completedX = -50;
 			completedPlayerX = -440;
-			current = levelCompleted; /////////////////// LEVEL COMPLETED///////////
-			int delay = 3000; // milliseconds
+			current = levelCompleted;
+			int delay = 3000;
 			ActionListener taskPerformer = new ActionListener() {
 				public void actionPerformed(ActionEvent evt) {
 					level++;
@@ -269,7 +266,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	}
 
 	public void drawEnd(Graphics g) {
-		// placeholder for the end
+		
 	}
 
 	public void drawLevelCompleted(Graphics g) {
@@ -345,8 +342,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			current = menu;
 			System.out.println(current);
 		} else if (current == game) {
-			// formerX=player.x;
-			// formerY=player.y;
 			System.out.println(player.x + ", " + player.y);
 			if (key == KeyEvent.VK_W) {
 				player.up = true;

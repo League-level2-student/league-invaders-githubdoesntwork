@@ -6,7 +6,7 @@ import java.awt.Rectangle;
 
 public class PowerUp extends GameObject{
 	int x, y;
-	Rectangle rect; 				//MAKE DISAPPEAR IF TOUCHED. GAMEPANEL ALREADY CREATED A POWERUP OBJECT
+	Rectangle rect; 
 	public PowerUp(int a, int b, int c, int d) {
 		super(a, b, c, d);
 		x=a;
