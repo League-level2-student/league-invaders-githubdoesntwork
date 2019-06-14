@@ -18,6 +18,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	int level = 1;
 	int completedX = -50;
 	int completedPlayerX = 0;
+	int movingMax;
 	int current = menu;
 	Font title;
 	Font normal;
@@ -116,16 +117,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
 		} else if (level == 3) {
 			exit.draw(g);
-			if (right) {
-				x += 2;
-			} else {
-				x -= 2;
-			}
-			if (x > 200) {
-				right = false;
-			} else if (x < 150) {
-				right = true;
-			}
 			lights.removeAll(lights);
 			lights.add(new Lights(x, 200, x, 300, "movingHoriz", 0, 0));
 			for (Lights light : lights) {
@@ -146,6 +137,16 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 				shield.draw(g);
 			}
 
+		}
+		if (right) {
+			x += 2;
+		} else {
+			x -= 2;
+		}
+		if (x > movingMax) {
+			right = false;
+		} else if (x < 150) {
+			right = true;
 		}
 		for (Lights light : lights) {
 			if (light.getLightType() == "moving") {
@@ -387,18 +388,22 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		lights.add(new Lights(400, 150, 400, 300, "vertBeam", 0, 0));
 		shield = new PowerUp(0, 0, 0, 0);
 		walls.add(new Wall(0, 0, 200, 200));
+		movingMax=0;
 	}
 
 	public void createLvl2() {
-		exit = new Exit(420, 120, 20, 20);
-		lights.add(new Lights(150, 200, 150, 300, "vertBeam", 0, 0));
+		exit = new Exit(450, 120, 20, 20);
+		lights.add(new Lights(400, 180, 500, 180, "buttonBeamHoriz", 100, 100));
+		//lights.add(new Lights(150, 200, 150, 300, "vertBeam", 0, 0));
 		shield = new PowerUp(150, 150, 15, 15);
-		walls.add(new Wall(200, 200, 100, 100));
+		walls.add(new Wall(300, 80, 100, 100));
+		movingMax=0;
 	}
 
 	public void createLvl3() {
 		exit = new Exit(420, 380, 20, 20);
 		x = 150;
+		movingMax=200;
 		shield = new PowerUp(150, 150, 15, 15);
 		walls.add(new Wall(0,0,0,0));
 	}
@@ -408,6 +413,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		lights.add(new Lights(400, 150, 400, 300, "buttonBeamVert", 200, 100));
 		shield = new PowerUp(100, 200, 15, 15);
 		walls.add(new Wall(0,0,0,0));
+		movingMax=0;
 	}
 
 	public void createLvl5() {
@@ -415,6 +421,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		lights.add(new Lights(100, 300, 300, 300, "buttonBeamHoriz", 300, 100));
 		shield = new PowerUp(150, 150, 15, 15);
 		walls.add(new Wall(0,0,0,0));
+		movingMax=0;
 	}
 
 }
