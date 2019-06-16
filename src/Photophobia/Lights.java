@@ -3,29 +3,49 @@ package Photophobia;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.Timer;
 
 public class Lights extends GameObject {
 	int firstX, firstY, secondX, secondY, buttonX, buttonY;
 	String type;
-	Rectangle horizRect, vertRect, movingRect, buttonRectVert, buttonHoriz, buttonVert, buttonRectHoriz;
-	boolean right = true;
+	Rectangle horizRect, vertRect, movingRect, buttonRectVert, buttonHoriz, buttonVert, buttonRectHoriz, blinkingRect;
+	boolean right = true, on = true;
 	boolean beamOnVert = true, beamOnHoriz = true;
 	int movingMax, movingMin;
 	Color vertButtonColor = new Color(93, 255, 0);
 	Color horizButtonColor = new Color(255, 182, 0);
 
-	public Lights(int a, int b, int c, int d, String t, int y, int z, int f, int g) {
-		super(a, b, c, d);
-		firstX = a;
-		firstY = b;
-		secondX = c;
-		secondY = d;
-		type = t;
-		buttonX = y;
-		buttonY = z;
-		movingMax = f;
-		movingMin = g;
-		x=g;
+	public Lights(int firstX, int firstY, int secondX, int secondY, String type, int buttonX, int buttonY,
+			int movingMax, int movingMin) {
+		super(firstX, firstY, secondX, secondY);
+		this.firstX = firstX;
+		this.firstY = firstY;
+		this.secondX = secondX;
+		this.secondY = secondY;
+		this.type = type;
+		this.buttonX = buttonX;
+		this.buttonY = buttonY;
+		this.movingMax = movingMax;
+		this.movingMin = movingMin;
+		x = movingMin;
+		if(type=="blinkingLight") {
+			int delay = 1000;
+			ActionListener taskPerformer = new ActionListener() {
+				public void actionPerformed(ActionEvent evt) {
+					if (on) {
+						on = false;
+					} else {
+						on = true;
+					}
+				}
+			};
+			Timer something = new Timer(delay, taskPerformer);
+			something.start();
+			something.setRepeats(true);
+		}
 	}
 
 	public void draw(Graphics g) {
@@ -79,6 +99,17 @@ public class Lights extends GameObject {
 			g.setColor(horizButtonColor);
 			g.fillRect(buttonX, buttonY, 15, 15);
 			buttonHoriz = new Rectangle(buttonX, buttonY, 15, 15);
+		} else if (type == "blinkingLight") {
+			g.setColor(Color.yellow);
+			g.fillRect(firstX + 5, firstY + 5, secondX - firstX + 15, 5);
+			g.setColor(Color.DARK_GRAY);
+			g.fillOval(firstX, firstY, 15, 15);
+			g.fillOval(secondX + 15, secondY, 15, 15);
+			if(on) {
+			blinkingRect = new Rectangle(firstX + 5, firstY + 5, secondX - firstX + 15, 5);
+			}else {
+				blinkingRect = new Rectangle(0,0,0,0);
+			}
 		}
 	}
 
@@ -113,4 +144,5 @@ public class Lights extends GameObject {
 		}
 		return "null";
 	}
+
 }
