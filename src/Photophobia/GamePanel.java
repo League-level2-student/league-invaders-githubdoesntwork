@@ -31,7 +31,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	int rand;
 	int x;
 	ArrayList<Wall> walls = new ArrayList<Wall>();
-	boolean intersectsLight = false;
 
 	public GamePanel() {
 		title = new Font("", Font.BOLD, 48);
@@ -104,35 +103,29 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			light.update();
 		}
 		for (Lights light : lights) {
-			if (light.getLightType() == "moving") {
+			if (light.getLightType().equals("moving")) {
 				if (player.playerRect.intersects(light.movingRect)) {
-					intersectsLight = true;
-				} else {
-					intersectsLight = false;
+					intersectsLight();
 				}
-			} else if (light.getLightType() == "vert") {
+			} else if (light.getLightType().equals("vert")) {
 				if (player.playerRect.intersects(light.vertRect)) {
-					intersectsLight = true;
-				} else {
-					intersectsLight = false;
-				}
-			} else if (light.getLightType() == "horiz") {
+					intersectsLight();
+				} 
+			} else if (light.getLightType().equals("horiz")) {
 				if (player.playerRect.intersects(light.horizRect)) {
-					intersectsLight = true;
-				} else {
-					intersectsLight = false;
+					intersectsLight();
 				}
-			} else if (light.getLightType() == "vertButton") {
+			} else if (light.getLightType().equals("vertButton")) {
 				if (player.playerRect.intersects(light.buttonRectVert)) {
-					intersectsLight = true;
-				} else {
-					intersectsLight = false;
+					intersectsLight();	
 				}
-			} else if (light.getLightType() == "horizButton") {
+			} else if (light.getLightType().equals("horizButton")) {
 				if (player.playerRect.intersects(light.buttonRectHoriz)) {
-					intersectsLight = true;
-				} else {
-					intersectsLight = false;
+					intersectsLight();
+				}
+			} else if (light.getLightType().equals("blinking")) {
+				if (player.playerRect.intersects(light.blinkingRect)) {
+					intersectsLight();
 				}
 			}
 		}
@@ -140,14 +133,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		if (player.playerRect.intersects(speedBoost.rect)) {
 			isPowerUp = true;
 			speedBoost = new PowerUp(0, 0, 0, 0);
-		} else if (intersectsLight) {
-			level = 1;
-			rand++;
-			if (rand > 2) {
-				rand = 0;
-			}
-			current = gameOver;
 		}
+
+		
+
 		if (exit.exitRect.intersects(player.playerRect)) {
 			completedX = -50;
 			completedPlayerX = -440;
@@ -182,10 +171,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		}
 		if (walls != null) {
 			for (Wall wall : walls) {
-					if (player.futureRect.intersects(wall.wallRect)) {
-						player.x = player.formerX;
-						player.y = player.formerY;
-					}
+				if (player.futureRect.intersects(wall.wallRect)) {
+					player.x = player.formerX;
+					player.y = player.formerY;
+				}
 			}
 		}
 		for (Lights light : lights) {
@@ -307,7 +296,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 				player.left = true;
 			} else if (key == KeyEvent.VK_D) {
 				player.right = true;
-			} 
+			}
 			if (isPowerUp) {
 				player.speed = 4;
 			} else {
@@ -336,6 +325,17 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		}
 	}
 
+	
+	public void intersectsLight() {
+		level = 1;
+		rand++;
+		if (rand > 2) {
+			rand = 0;
+		}
+		current = gameOver;
+	}
+	
+	
 	public void createLvl1() {
 		exit = new Exit(470, 230, 20, 20);
 		lights.add(new Lights(400, 150, 400, 300, "vertBeam", 0, 0, 0, 0));
@@ -344,8 +344,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	}
 
 	public void createLvl2() {
+		player.x=374;
+		player.y=288;
 		exit = new Exit(450, 120, 20, 20);
-		lights.add(new Lights(400, 180, 490, 180, "buttonBeamHoriz", 100, 390, 160, 0));
+		lights.add(new Lights(400, 180, 488, 180, "buttonBeamHoriz", 100, 390, 160, 0));
 		lights.add(new Lights(0, 240, 0, 320, "movingHoriz", 0, 0, 160, 80));
 		speedBoost = new PowerUp(0, 0, 0, 0);
 		walls.add(new Wall(300, 80, 100, 100));
@@ -353,17 +355,22 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	}
 
 	public void createLvl3() {
-		exit = new Exit(420, 380, 20, 20);
-		lights.add(new Lights(80,200,200,200,"blinkingLight",0,0,0,0));
-		lights.add(new Lights(0, 200, 0, 300, "movingHoriz", 0, 0, 200, 150));
-		speedBoost = new PowerUp(150, 150, 15, 15);
+		player.x=424;
+		player.y=264;
+		exit = new Exit(424, 375, 20, 20);
+		lights.add(new Lights(220, 200, 350, 200, "blinkingLight", 0, 0, 0, 0));
+		lights.add(new Lights(190, 200, 190, 310, "buttonBeamVert", 293, 126, 0, 0));
+		lights.add(new Lights(350,340,490,340,"buttonBeamHoriz",126,260,0,0));
+		speedBoost = new PowerUp(0,0,0,0);
 		walls.add(new Wall(80, 340, 270, 80));
+		walls.add(new Wall(80, 80, 150, 120));
+		walls.add(new Wall(370, 80, 150, 120));
 	}
 
 	public void createLvl4() {
 		exit = new Exit(470, 230, 20, 20);
 		lights.add(new Lights(400, 150, 400, 300, "buttonBeamVert", 200, 100, 0, 0));
-		speedBoost = new PowerUp(100, 200, 15, 15);
+		speedBoost = new PowerUp(0,0,0,0);
 		walls.add(new Wall(0, 0, 0, 0));
 	}
 
