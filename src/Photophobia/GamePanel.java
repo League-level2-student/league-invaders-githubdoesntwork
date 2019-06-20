@@ -18,6 +18,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	int level = 1;
 	int completedX = -50;
 	int completedPlayerX = 0;
+	int scoreCounting;
 	int current = menu;
 	Font title;
 	Font normal;
@@ -30,6 +31,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	boolean isPowerUp;
 	int rand;
 	int x;
+	int score;
 	ArrayList<Wall> walls = new ArrayList<Wall>();
 
 	public GamePanel() {
@@ -59,6 +61,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		repaint();
+		score++;
 	}
 
 	public void drawMenu(Graphics g) {
@@ -148,7 +151,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 				public void actionPerformed(ActionEvent evt) {
 					level++;
 					if (level > 4) {
-						level = 1;
+						current = end;
+					}else {
+						current=game;
 					}
 					if (level == 1) {
 						createLvl1();
@@ -161,7 +166,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 						createLvl4();
 					}
 					isPowerUp = false;
-					current = game;
 				}
 			};
 			Timer something = new Timer(delay, taskPerformer);
@@ -209,7 +213,18 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	}
 
 	public void drawEnd(Graphics g) {
-
+		g.setColor(Color.black);
+		g.fillRect(0, 0, 600, 500);
+		g.setColor(Color.yellow);
+		g.setFont(title);
+		g.drawString("You Win!", 170, 150);
+		g.setFont(normal);
+		g.drawString("Score:", 220, 300);
+		g.drawString(""+scoreCounting, 290, 300);
+		scoreCounting+=8;
+		if(scoreCounting>7000-score) {
+			timer.stop();
+		}
 	}
 
 	public void drawLevelCompleted(Graphics g) {
@@ -245,12 +260,13 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.setFont(title);
 		g.drawString("Instructions", 140, 100);
 		g.setFont(normal);
-		g.drawString("'Photophobia' is the fear of light. Avoid the light to survive.", 5, 220);
-		g.drawString("The red rectangle gives the player a sizable speed boost.", 10, 250);
-		g.drawString("Near the end of the level, the black square is the exit,", 5, 280);
-		g.drawString("which is triggered upon contact. The yellow represents", 5, 310);
-		g.drawString("a light, which kills the player. Lastly, the orange and green ", 5, 340);
-		g.drawString("buttons deactivate horizonal and vertical lights, respectively.", 5, 370);
+		g.drawString("'Photophobia' is the fear of light. Avoid the light to survive.", 5, 190);
+		g.drawString("The red rectangle gives the player a sizable speed boost.", 10, 220);
+		g.drawString("Near the end of the level, the black square is the exit,", 5, 250);
+		g.drawString("which is triggered upon contact. The yellow represents", 5, 280);
+		g.drawString("a light, which kills the player, the orange and green ", 5, 310);
+		g.drawString("buttons deactivate horizonal and vertical lights, respectively.", 5, 340);
+		g.drawString("Lastly, blinking lights turn on and off once a second.", 5, 370);
 		g.drawString("The player can navigate with 'WASD' keys.", 5, 400);
 		g.drawString("Press space to return to menu", 150, 430);
 
@@ -338,7 +354,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		player.x = 288;
 		player.y = 238;
 		exit = new Exit(470, 230, 20, 20);
-		lights.add(new Lights(400, 150, 400, 300, "vertBeam", 0, 0, 0, 0));
+		lights.add(new Lights(400, 150, 400, 300, "vertBeam", 0, 0, 0, 0, 0));
 		speedBoost = new PowerUp(0, 0, 0, 0);
 		walls.add(new Wall(0, 0, 200, 200));
 	}
@@ -347,8 +363,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		player.x = 374;
 		player.y = 288;
 		exit = new Exit(450, 120, 20, 20);
-		lights.add(new Lights(400, 180, 488, 180, "buttonBeamHoriz", 100, 390, 160, 0));
-		lights.add(new Lights(0, 240, 0, 320, "movingHoriz", 0, 0, 160, 80));
+		lights.add(new Lights(400, 180, 488, 180, "buttonBeamHoriz", 100, 390, 160, 0, 0));
+		lights.add(new Lights(80, 240, 80, 320, "movingHoriz", 0, 0, 160, 80, 80));
 		speedBoost = new PowerUp(0, 0, 0, 0);
 		walls.add(new Wall(300, 80, 100, 100));
 		walls.add(new Wall(160, 340, 80, 100));
@@ -358,9 +374,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		player.x = 424;
 		player.y = 264;
 		exit = new Exit(424, 375, 20, 20);
-		lights.add(new Lights(220, 200, 350, 200, "blinkingLight", 0, 0, 0, 0));
-		lights.add(new Lights(190, 200, 190, 310, "buttonBeamVert", 293, 126, 0, 0));
-		lights.add(new Lights(350, 340, 490, 340, "buttonBeamHoriz", 126, 260, 0, 0));
+		lights.add(new Lights(220, 200, 350, 200, "blinkingLight", 0, 0, 0, 0, 0));
+		lights.add(new Lights(190, 200, 190, 310, "buttonBeamVert", 293, 126, 0, 0, 0));
+		lights.add(new Lights(350, 340, 490, 340, "buttonBeamHoriz", 126, 260, 0, 0, 0));
 		speedBoost = new PowerUp(0, 0, 0, 0);
 		walls.add(new Wall(80, 340, 270, 80));
 		walls.add(new Wall(80, 80, 150, 120));
@@ -371,10 +387,11 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		player.x = 340;
 		player.y = 242;
 		exit = new Exit(110, 110, 20, 20);
-		lights.add(new Lights(428, 156, 491, 156, "buttonBeamHoriz", 468, 202, 0, 0));
-		lights.add(new Lights(430, 156, 430, 222, "otherBlinkingLight", 0, 0, 0, 0));
-		lights.add(new Lights(80, 150, 80, 200, "movingHoriz", 0, 0, 158, 80));
-		lights.add(new Lights(158, 215, 158, 300, "movingHoriz", 0, 0, 158, 80));
+		lights.add(new Lights(428, 156, 491, 156, "buttonBeamHoriz", 468, 202, 0, 0, 0));
+		lights.add(new Lights(430, 156, 430, 222, "otherBlinkingLight", 0, 0, 0, 0, 0));
+		lights.add(new Lights(80, 150, 80, 200, "movingHoriz", 0, 0, 158, 80, 0));
+		lights.add(new Lights(158, 215, 158, 300, "movingHoriz", 0, 0, 158, 80, 0));
+		lights.add(new Lights(80, 320, 133, 320, "blinkingLight", 0, 0, 0, 0, 0));
 		speedBoost = new PowerUp(465, 116, 15, 15);
 		walls.add(new Wall(213, 80, 215, 80));
 		walls.add(new Wall(430, 252, 100, 200));

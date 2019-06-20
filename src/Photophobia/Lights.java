@@ -18,9 +18,10 @@ public class Lights extends GameObject {
 	int movingMax, movingMin;
 	Color vertButtonColor = new Color(93, 255, 0);
 	Color horizButtonColor = new Color(255, 182, 0);
+	int thing;
 
 	public Lights(int firstX, int firstY, int secondX, int secondY, String type, int buttonX, int buttonY,
-			int movingMax, int movingMin) {
+			int movingMax, int movingMin, int thing) {
 		super(firstX, firstY, secondX, secondY);
 		this.firstX = firstX;
 		this.firstY = firstY;
@@ -31,6 +32,7 @@ public class Lights extends GameObject {
 		this.buttonY = buttonY;
 		this.movingMax = movingMax;
 		this.movingMin = movingMin;
+		this.thing=thing;
 		x = secondX;
 		if (type.equals("blinkingLight") || type.equals("otherBlinkingLight")) {
 			int delay = 1000;
@@ -100,17 +102,17 @@ public class Lights extends GameObject {
 			g.fillRect(buttonX, buttonY, 15, 15);
 			buttonHoriz = new Rectangle(buttonX, buttonY, 15, 15);
 		} else if (type == "blinkingLight") {
-			if (on) {
+			if(on) {
 				g.setColor(Color.yellow);
-				vertRect = new Rectangle(firstX + 5, firstY + 5, 5, secondY - firstY + 15);
-				g.fillRect(firstX + 5, firstY + 5, 5, secondY - firstY + 15);
-			} else {
-				blinkingRect = new Rectangle(0, 0, 0, 0);
+				g.fillRect(firstX + 5, firstY + 5, secondX - firstX + 15, 5);
+			blinkingRect = new Rectangle(firstX + 5, firstY + 5, secondX - firstX + 15, 5);
+			}else {
+				blinkingRect = new Rectangle(0,0,0,0);
 			}
 			g.setColor(Color.DARK_GRAY);
 			g.fillOval(firstX, firstY, 15, 15);
-			g.fillOval(secondX, secondY + 15, 15, 15);
-		} else if (type == "otherBlinkingLight") {
+			g.fillOval(secondX + 15, secondY, 15, 15);
+		}else if (type == "otherBlinkingLight") {
 			if (on) {
 				g.setColor(Color.yellow);
 				otherBlinkingRect = new Rectangle(firstX + 5, firstY + 5, 5, secondY - firstY + 15);
