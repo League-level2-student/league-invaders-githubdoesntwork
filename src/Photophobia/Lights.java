@@ -11,14 +11,16 @@ import javax.swing.Timer;
 public class Lights extends GameObject {
 	int firstX, firstY, secondX, secondY, buttonX, buttonY;
 	String type;
-	Rectangle horizRect, vertRect, movingRect, buttonRectVert, buttonHoriz, buttonVert, buttonRectHoriz, blinkingRect;
+	Rectangle horizRect, vertRect, movingRect, buttonRectVert, buttonHoriz, buttonVert, buttonRectHoriz, blinkingRect,
+			otherBlinkingRect;
 	boolean right = true, on = true;
 	boolean beamOnVert = true, beamOnHoriz = true;
 	int movingMax, movingMin;
 	Color vertButtonColor = new Color(93, 255, 0);
 	Color horizButtonColor = new Color(255, 182, 0);
 
-	public Lights(int firstX, int firstY, int secondX, int secondY, String type, int buttonX, int buttonY, int movingMax, int movingMin) {
+	public Lights(int firstX, int firstY, int secondX, int secondY, String type, int buttonX, int buttonY,
+			int movingMax, int movingMin) {
 		super(firstX, firstY, secondX, secondY);
 		this.firstX = firstX;
 		this.firstY = firstY;
@@ -29,8 +31,8 @@ public class Lights extends GameObject {
 		this.buttonY = buttonY;
 		this.movingMax = movingMax;
 		this.movingMin = movingMin;
-		x = movingMin;
-		if(type.equals("blinkingLight")) {
+		x = secondX;
+		if (type.equals("blinkingLight") || type.equals("otherBlinkingLight")) {
 			int delay = 1000;
 			ActionListener taskPerformer = new ActionListener() {
 				public void actionPerformed(ActionEvent evt) {
@@ -98,16 +100,27 @@ public class Lights extends GameObject {
 			g.fillRect(buttonX, buttonY, 15, 15);
 			buttonHoriz = new Rectangle(buttonX, buttonY, 15, 15);
 		} else if (type == "blinkingLight") {
-			if(on) {
-			g.setColor(Color.yellow);
-			g.fillRect(firstX + 5, firstY + 5, secondX - firstX + 15, 5);
-			blinkingRect = new Rectangle(firstX + 5, firstY + 5, secondX - firstX + 15, 5);
-			}else {
-				blinkingRect = new Rectangle(0,0,0,0);
+			if (on) {
+				g.setColor(Color.yellow);
+				vertRect = new Rectangle(firstX + 5, firstY + 5, 5, secondY - firstY + 15);
+				g.fillRect(firstX + 5, firstY + 5, 5, secondY - firstY + 15);
+			} else {
+				blinkingRect = new Rectangle(0, 0, 0, 0);
 			}
 			g.setColor(Color.DARK_GRAY);
 			g.fillOval(firstX, firstY, 15, 15);
-			g.fillOval(secondX + 15, secondY, 15, 15);
+			g.fillOval(secondX, secondY + 15, 15, 15);
+		} else if (type == "otherBlinkingLight") {
+			if (on) {
+				g.setColor(Color.yellow);
+				otherBlinkingRect = new Rectangle(firstX + 5, firstY + 5, 5, secondY - firstY + 15);
+				g.fillRect(firstX + 5, firstY + 5, 5, secondY - firstY + 15);
+			} else {
+				otherBlinkingRect = new Rectangle(0, 0, 0, 0);
+			}
+			g.setColor(Color.DARK_GRAY);
+			g.fillOval(firstX, firstY, 15, 15);
+			g.fillOval(secondX, secondY + 15, 15, 15);
 		}
 	}
 
@@ -140,10 +153,13 @@ public class Lights extends GameObject {
 		if (type == "buttonBeamHoriz") {
 			return "horizButton";
 		}
-		if(type == "blinkingLight") {
+		if (type == "blinkingLight") {
 			return "blinking";
 		}
-			
+		if(type=="otherBlinkingLight") {
+			return "other";
+		}
+
 		return null;
 	}
 

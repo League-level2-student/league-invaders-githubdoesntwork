@@ -110,14 +110,14 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			} else if (light.getLightType().equals("vert")) {
 				if (player.playerRect.intersects(light.vertRect)) {
 					intersectsLight();
-				} 
+				}
 			} else if (light.getLightType().equals("horiz")) {
 				if (player.playerRect.intersects(light.horizRect)) {
 					intersectsLight();
 				}
 			} else if (light.getLightType().equals("vertButton")) {
 				if (player.playerRect.intersects(light.buttonRectVert)) {
-					intersectsLight();	
+					intersectsLight();
 				}
 			} else if (light.getLightType().equals("horizButton")) {
 				if (player.playerRect.intersects(light.buttonRectHoriz)) {
@@ -125,6 +125,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 				}
 			} else if (light.getLightType().equals("blinking")) {
 				if (player.playerRect.intersects(light.blinkingRect)) {
+					intersectsLight();
+				}
+			} else if (light.getLightType().equals("other")) {
+				if (player.playerRect.intersects(light.otherBlinkingRect)) {
 					intersectsLight();
 				}
 			}
@@ -135,8 +139,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			speedBoost = new PowerUp(0, 0, 0, 0);
 		}
 
-		
-
 		if (exit.exitRect.intersects(player.playerRect)) {
 			completedX = -50;
 			completedPlayerX = -440;
@@ -145,7 +147,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			ActionListener taskPerformer = new ActionListener() {
 				public void actionPerformed(ActionEvent evt) {
 					level++;
-					if (level > 5) {
+					if (level > 4) {
 						level = 1;
 					}
 					if (level == 1) {
@@ -157,8 +159,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 						x = 150;
 					} else if (level == 4) {
 						createLvl4();
-					} else if (level == 5) {
-						createLvl5();
 					}
 					isPowerUp = false;
 					current = game;
@@ -325,7 +325,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		}
 	}
 
-	
 	public void intersectsLight() {
 		level = 1;
 		rand++;
@@ -334,9 +333,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		}
 		current = gameOver;
 	}
-	
-	
+
 	public void createLvl1() {
+		player.x = 288;
+		player.y = 238;
 		exit = new Exit(470, 230, 20, 20);
 		lights.add(new Lights(400, 150, 400, 300, "vertBeam", 0, 0, 0, 0));
 		speedBoost = new PowerUp(0, 0, 0, 0);
@@ -344,8 +344,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	}
 
 	public void createLvl2() {
-		player.x=374;
-		player.y=288;
+		player.x = 374;
+		player.y = 288;
 		exit = new Exit(450, 120, 20, 20);
 		lights.add(new Lights(400, 180, 488, 180, "buttonBeamHoriz", 100, 390, 160, 0));
 		lights.add(new Lights(0, 240, 0, 320, "movingHoriz", 0, 0, 160, 80));
@@ -355,30 +355,30 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	}
 
 	public void createLvl3() {
-		player.x=424;
-		player.y=264;
+		player.x = 424;
+		player.y = 264;
 		exit = new Exit(424, 375, 20, 20);
 		lights.add(new Lights(220, 200, 350, 200, "blinkingLight", 0, 0, 0, 0));
 		lights.add(new Lights(190, 200, 190, 310, "buttonBeamVert", 293, 126, 0, 0));
-		lights.add(new Lights(350,340,490,340,"buttonBeamHoriz",126,260,0,0));
-		speedBoost = new PowerUp(0,0,0,0);
+		lights.add(new Lights(350, 340, 490, 340, "buttonBeamHoriz", 126, 260, 0, 0));
+		speedBoost = new PowerUp(0, 0, 0, 0);
 		walls.add(new Wall(80, 340, 270, 80));
 		walls.add(new Wall(80, 80, 150, 120));
 		walls.add(new Wall(370, 80, 150, 120));
 	}
 
 	public void createLvl4() {
-		exit = new Exit(470, 230, 20, 20);
-		lights.add(new Lights(400, 150, 400, 300, "buttonBeamVert", 200, 100, 0, 0));
-		speedBoost = new PowerUp(0,0,0,0);
-		walls.add(new Wall(0, 0, 0, 0));
-	}
-
-	public void createLvl5() {
-		exit = new Exit(420, 120, 20, 20);
-		lights.add(new Lights(100, 300, 300, 300, "buttonBeamHoriz", 300, 100, 0, 0));
-		speedBoost = new PowerUp(150, 150, 15, 15);
-		walls.add(new Wall(0, 0, 0, 0));
+		player.x = 340;
+		player.y = 242;
+		exit = new Exit(110, 110, 20, 20);
+		lights.add(new Lights(428, 156, 491, 156, "buttonBeamHoriz", 468, 202, 0, 0));
+		lights.add(new Lights(430, 156, 430, 222, "otherBlinkingLight", 0, 0, 0, 0));
+		lights.add(new Lights(80, 150, 80, 200, "movingHoriz", 0, 0, 158, 80));
+		lights.add(new Lights(158, 215, 158, 300, "movingHoriz", 0, 0, 158, 80));
+		speedBoost = new PowerUp(465, 116, 15, 15);
+		walls.add(new Wall(213, 80, 215, 80));
+		walls.add(new Wall(430, 252, 100, 200));
+		walls.add(new Wall(163, 80, 50, 280));
 	}
 
 }
